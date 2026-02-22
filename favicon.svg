@@ -1,0 +1,40 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Green circle background -->
+  <circle cx="32" cy="32" r="32" fill="#34d399"/>
+
+  <!-- Lotus flower - outer petals -->
+  <g fill="#ffffff" opacity="0.9">
+    <!-- Top petal -->
+    <ellipse cx="32" cy="12" rx="6" ry="10" fill="#ffffff"/>
+
+    <!-- Top-right petal -->
+    <ellipse cx="45.6" cy="17.2" rx="6" ry="10" fill="#ffffff" transform="rotate(60 45.6 17.2)"/>
+
+    <!-- Bottom-right petal -->
+    <ellipse cx="45.6" cy="46.8" rx="6" ry="10" fill="#ffffff" transform="rotate(120 45.6 46.8)"/>
+
+    <!-- Bottom petal -->
+    <ellipse cx="32" cy="52" rx="6" ry="10" fill="#ffffff"/>
+
+    <!-- Bottom-left petal -->
+    <ellipse cx="18.4" cy="46.8" rx="6" ry="10" fill="#ffffff" transform="rotate(-120 18.4 46.8)"/>
+
+    <!-- Top-left petal -->
+    <ellipse cx="18.4" cy="17.2" rx="6" ry="10" fill="#ffffff" transform="rotate(-60 18.4 17.2)"/>
+  </g>
+
+  <!-- Inner circle with gradient effect -->
+  <circle cx="32" cy="32" r="14" fill="#34d399"/>
+
+  <!-- Center lotus detail -->
+  <g fill="#ffffff" opacity="0.95">
+    <!-- Inner petals (smaller) -->
+    <ellipse cx="32" cy="24" rx="4" ry="6" fill="#ffffff"/>
+    <ellipse cx="40" cy="32" rx="6" ry="4" fill="#ffffff"/>
+    <ellipse cx="32" cy="40" rx="4" ry="6" fill="#ffffff"/>
+    <ellipse cx="24" cy="32" rx="6" ry="4" fill="#ffffff"/>
+
+    <!-- Center dot -->
+    <circle cx="32" cy="32" r="2.5" fill="#34d399"/>
+  </g>
+</svg>
