@@ -1,0 +1,4195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenFlow Ultimate: Super Edition</title>
+    <meta name="theme-color" content="#34d399">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ZenFlow">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" type="image/svg+xml" href="./icons/favicon.svg">
+    <link rel="apple-touch-icon" href="./icons/icon-192.svg">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Marcellus:wght@400&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Marcellus', serif;
+            font-weight: 700;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(102, 126, 234, 0.1);
+            padding: 20px;
+        }
+
+        .glass-card-sm {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            box-shadow: 0 4px 16px 0 rgba(102, 126, 234, 0.08);
+            padding: 12px;
+        }
+
+        .dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #f0f0f0;
+        }
+
+        .dark-mode .glass-card,
+        .dark-mode .glass-card-sm {
+            background: rgba(30, 30, 50, 0.85);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .badge-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .badge-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 16px;
+            border-radius: 12px;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #667eea;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #999;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s ease;
+            transform-origin: 50% 50%;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            border-radius: 12px;
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+
+        .toast.fadeOut {
+            animation: slideOut 0.3s ease;
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            animation: fadeIn 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.3s ease;
+        }
+
+        .dark-mode .modal-content {
+            background: #1a1a2e;
+            color: #f0f0f0;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(40px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 1px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px 16px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Quicksand', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .input-field {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #f0f0f0;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .achievement-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            border-radius: 16px;
+            background: rgba(102, 126, 234, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .achievement-badge.unlocked {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .achievement-badge.locked {
+            opacity: 0.5;
+            filter: grayscale(100%);
+        }
+
+        .achievement-badge:hover {
+            transform: scale(1.05);
+        }
+
+        .achievement-icon {
+            font-size: 32px;
+            margin-bottom: 4px;
+        }
+
+        .achievement-name {
+            font-size: 11px;
+            font-weight: 600;
+            text-align: center;
+            word-break: break-word;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .sun-icon {
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .breathing-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            animation: breathe 8s ease-in-out infinite;
+            margin: 40px auto;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        .timer-display {
+            font-size: 48px;
+            font-weight: 700;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 4px;
+        }
+
+        .pomodoro-status {
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .column-left {
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .column-right {
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+            padding-left: 8px;
+        }
+
+        .column-left::-webkit-scrollbar,
+        .column-right::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .column-left::-webkit-scrollbar-track,
+        .column-right::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .column-left::-webkit-scrollbar-thumb,
+        .column-right::-webkit-scrollbar-thumb {
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 3px;
+        }
+
+        .column-left::-webkit-scrollbar-thumb:hover,
+        .column-right::-webkit-scrollbar-thumb:hover {
+            background: rgba(102, 126, 234, 0.4);
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .control-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border: none;
+            color: #667eea;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: scale(1.05);
+        }
+
+        .control-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .health-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .health-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981 0%, #667eea 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-bar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 50;
+        }
+
+        .dark-mode .nav-bar {
+            background: rgba(30, 30, 50, 0.85);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-title {
+            font-family: 'Marcellus', serif;
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(102, 126, 234, 0.1);
+            border: none;
+            color: #667eea;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: scale(1.05);
+        }
+
+        .weather-widget {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        .weather-temp {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .weather-icon {
+            font-size: 20px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/3;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        #webcamVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #canvasOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #vrOverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 80;
+        }
+
+        #vrOverlay.active {
+            display: block;
+        }
+
+        #vrOverlay #webcamVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        #vrOverlay #canvasOverlay {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #privacyOverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 70;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            font-weight: 600;
+        }
+
+        #privacyOverlay.active {
+            display: flex;
+        }
+
+        #zenOverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 70;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        #zenOverlay.active {
+            display: flex;
+        }
+
+        .zen-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            animation: zenFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes zenFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .zen-text {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .snapshot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .snapshot {
+            aspect-ratio: 4/3;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .snapshot:hover {
+            transform: scale(1.05);
+            border-color: #667eea;
+        }
+
+        .snapshot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .mood-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .mood-btn {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border: 2px solid transparent;
+            font-size: 32px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mood-btn:hover {
+            transform: scale(1.1);
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .mood-btn.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+            transform: scale(1.1);
+        }
+
+        .chart-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            flex: 1;
+            gap: 8px;
+            min-height: 200px;
+        }
+
+        .chart-bar-fill {
+            width: 100%;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            border-radius: 6px 6px 0 0;
+            transition: height 0.5s ease;
+            position: relative;
+        }
+
+        .chart-bar-value {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            font-weight: 600;
+            color: #667eea;
+            white-space: nowrap;
+        }
+
+        .chart-bar-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .achievement-tooltip {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 10;
+            display: none;
+        }
+
+        .achievement-badge:hover .achievement-tooltip {
+            display: block;
+        }
+
+        .goal-ring {
+            width: 100%;
+            max-width: 120px;
+            margin: 0 auto;
+        }
+
+        .goal-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .goal-item {
+            text-align: center;
+        }
+
+        .goal-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+        }
+
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .shortcut-key {
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+            min-width: 32px;
+            text-align: center;
+        }
+
+        .shortcut-desc {
+            flex: 1;
+            margin-left: 12px;
+            text-align: left;
+        }
+
+        /* Health Score */
+        .health-score-ring {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 800;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .stress-indicator {
+            height: 6px;
+            border-radius: 3px;
+            transition: all 0.5s ease;
+        }
+
+        .emotion-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 2px;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .emotion-dot:hover {
+            transform: scale(1.5);
+        }
+
+        .challenge-card {
+            padding: 12px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .challenge-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        .challenge-card.completed {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(52, 211, 153, 0.1));
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .voice-cmd-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .voice-cmd-active {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            animation: voicePulse 1.5s ease-in-out infinite;
+        }
+
+        .voice-cmd-inactive {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        @keyframes voicePulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50% { opacity: 0.8; box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+        }
+
+        .insight-card {
+            padding: 12px 16px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(168, 85, 247, 0.05));
+            border-left: 3px solid #8b5cf6;
+            margin-bottom: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .ai-report-btn {
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .ai-report-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Voice Status Floating Indicator -->
+    <div id="voiceStatusFloat" style="position:fixed; bottom:20px; left:20px; z-index:999; background:rgba(0,0,0,0.85); color:white; padding:10px 16px; border-radius:16px; font-size:13px; font-family:'Quicksand',sans-serif; display:flex; align-items:center; gap:8px; backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.15); transition:all 0.3s; max-width:400px; opacity:0; pointer-events:none;">
+        <span id="voiceStatusIcon" style="font-size:18px; animation:voicePulse 1.5s ease-in-out infinite;">🔊</span>
+        <span id="voiceStatusText" style="flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></span>
+    </div>
+
+    <!-- VR Overlay -->
+    <div id="vrOverlay" class="z-80">
+        <video id="webcamVideoVR" autoplay playsinline muted class="w-full h-full object-contain"></video>
+        <canvas id="canvasOverlayVR" class="absolute inset-0 w-full h-full"></canvas>
+        <button id="vrExitBtn" class="absolute top-6 right-6 bg-red-500 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-600 transition z-90">✕ Выход</button>
+        <div id="vrStats" class="absolute bottom-6 left-6 text-white text-sm space-y-1 z-90"></div>
+    </div>
+
+    <!-- Privacy Overlay -->
+    <div id="privacyOverlay" class="z-70">
+        🔒 Приватный режим активирован
+    </div>
+
+    <!-- Zen Overlay -->
+    <div id="zenOverlay" class="z-70">
+        <div class="zen-circle">☮️</div>
+        <div class="zen-text">Вы в состоянии Дзен</div>
+    </div>
+
+    <!-- Breathing Modal -->
+    <div id="breathingModal" class="modal z-100">
+        <div class="modal-content">
+            <h2 class="text-2xl font-bold mb-8 text-center">Дыхательное Упражнение</h2>
+            <div class="breathing-circle"></div>
+            <div id="breathingPhase" class="text-center text-xl font-semibold text-purple-600 mb-8"></div>
+            <p class="text-center text-gray-600 mb-8">Синхронизируйте свое дыхание с анимацией. Это 4-4-4-4 дыхание (вдох 4сек, задержка 4сек, выдох 4сек, задержка 4сек).</p>
+            <div class="flex gap-3">
+                <button class="btn btn-secondary flex-1" onclick="closeModal('breathingModal')">Закрыть</button>
+                <button class="btn btn-primary flex-1" id="resetBreathBtn" onclick="resetBreathing()">Заново</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Eye Break Modal -->
+    <div id="eyeBreakModal" class="modal z-100">
+        <div class="modal-content">
+            <h2 class="text-2xl font-bold mb-6 text-center">⏱️ Правило 20-20-20</h2>
+            <p class="text-center text-gray-600 mb-8">Пора дать глазам отдохнуть! Посмотрите на что-нибудь на расстоянии 20 футов (6 метров) на 20 секунд.</p>
+            <div class="stat-box">
+                <div class="stat-number" id="eyeBreakCountdown">20</div>
+                <div class="stat-label">Секунд осталось</div>
+            </div>
+            <div class="flex gap-3 mt-8">
+                <button class="btn btn-secondary flex-1" onclick="closeModal('eyeBreakModal')">Пропустить</button>
+                <button class="btn btn-primary flex-1" id="eyeBreakDoneBtn" onclick="eyeBreakComplete()">Готово!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auto Report Alert -->
+    <div id="autoReportAlert" class="modal z-100">
+        <div class="modal-content">
+            <h2 class="text-2xl font-bold mb-4 text-center">📊 Автоматический Отчет</h2>
+            <div class="space-y-4">
+                <div class="stat-box">
+                    <div class="stat-number" id="reportWater">0</div>
+                    <div class="stat-label">Стаканов Воды</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="reportSmiles">0</div>
+                    <div class="stat-label">Улыбок</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="reportSquats">0</div>
+                    <div class="stat-label">Приседаний</div>
+                </div>
+            </div>
+            <div class="flex gap-3 mt-8">
+                <button class="btn btn-secondary flex-1" onclick="closeModal('autoReportAlert')">Закрыть</button>
+                <button class="btn btn-primary flex-1" onclick="shareReport('whatsapp')">Поделиться WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal z-100">
+        <div class="modal-content max-w-2xl">
+            <h2 class="text-2xl font-bold mb-6">⚙️ Настройки</h2>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold mb-4">🎯 Ежедневные Цели</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Вода (стаканов)</label>
+                        <input type="number" id="goalWater" min="1" max="20" class="input-field" placeholder="Цель">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Улыбки</label>
+                        <input type="number" id="goalSmiles" min="1" max="50" class="input-field" placeholder="Цель">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Растяжки</label>
+                        <input type="number" id="goalStretches" min="1" max="20" class="input-field" placeholder="Цель">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Приседания</label>
+                        <input type="number" id="goalSquats" min="1" max="100" class="input-field" placeholder="Цель">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Фокус (часов)</label>
+                        <input type="number" id="goalFocus" min="0.5" max="12" step="0.5" class="input-field" placeholder="Цель">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold mb-4">🎚️ Функции</h3>
+                <div class="space-y-3">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" id="featureFaceLandmark" class="w-4 h-4" checked>
+                        <span>Анализ Лица</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" id="featureHandLandmark" class="w-4 h-4" checked>
+                        <span>Анализ Рук</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" id="featureObjectDetection" class="w-4 h-4" checked>
+                        <span>Обнаружение Объектов</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" id="featurePosture" class="w-4 h-4" checked>
+                        <span>Контроль Осанки</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" id="featureSmileCounter" class="w-4 h-4" checked>
+                        <span>Счетчик Улыбок</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" id="featureHydration" class="w-4 h-4" checked>
+                        <span>Отслеживание Гидратации</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold mb-4">🌙 Тема</h3>
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" id="darkModeToggle" class="w-4 h-4">
+                    <span>Темный режим</span>
+                </label>
+            </div>
+
+            <div class="mb-8 p-4 rounded-2xl bg-purple-50 border border-purple-200">
+                <h3 class="text-lg font-semibold mb-2">🧠 Видеоаналитика (Gemini AI)</h3>
+                <p class="text-xs text-gray-500 mb-3">Введите API ключ Gemini для расширенного анализа камеры с описанием сцены голосом</p>
+                <input type="password" id="geminiApiKey" class="input-field" placeholder="AIza... (ваш Gemini API ключ)" value="AIzaSyB0oEM2UlLn1XJRl6FX9lEhe1PrmTbzfNU">
+                <p class="text-[10px] text-gray-400 mt-1">Получить ключ: <a href="https://aistudio.google.com/apikey" target="_blank" class="text-purple-600 underline">aistudio.google.com/apikey</a></p>
+            </div>
+
+            <div class="flex gap-3">
+                <button class="btn btn-secondary flex-1" onclick="closeModal('settingsModal')">Закрыть</button>
+                <button class="btn btn-primary flex-1" onclick="saveSettings()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diagnostics Modal -->
+    <div id="diagnosticsModal" class="modal z-100">
+        <div class="modal-content max-w-2xl">
+            <h2 class="text-2xl font-bold mb-6">🔧 Диагностика</h2>
+
+            <div class="space-y-4">
+                <div class="glass-card-sm">
+                    <div class="text-sm font-semibold text-gray-600">FPS</div>
+                    <div id="diagnosticsFPS" class="text-2xl font-bold">0</div>
+                </div>
+                <div class="glass-card-sm">
+                    <div class="text-sm font-semibold text-gray-600">Статус Моделей</div>
+                    <div id="diagnosticsModels" class="text-sm space-y-1 mt-2">
+                        <div>FaceLandmarker: <span class="badge badge-warning">Загрузка...</span></div>
+                        <div>HandLandmarker: <span class="badge badge-warning">Загрузка...</span></div>
+                        <div>ObjectDetector: <span class="badge badge-warning">Загрузка...</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <h3 class="font-semibold mb-3">📋 Логи События</h3>
+                <div id="eventLog" class="bg-gray-100 p-4 rounded-lg text-xs font-mono max-h-200 overflow-y-auto scrollbar-hide"></div>
+            </div>
+
+            <div class="flex gap-3 mt-8">
+                <button class="btn btn-secondary flex-1" onclick="closeModal('diagnosticsModal')">Закрыть</button>
+                <button class="btn btn-primary flex-1" onclick="clearEventLog()">Очистить Логи</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Modal -->
+    <div id="statsModal" class="modal z-100">
+        <div class="modal-content max-w-3xl max-h-full overflow-y-auto">
+            <h2 class="text-2xl font-bold mb-6">📈 Статистика Сеанса</h2>
+
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <div class="stat-box">
+                    <div class="stat-number" id="statsWater">0</div>
+                    <div class="stat-label">Стаканов Воды</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="statsSmiles">0</div>
+                    <div class="stat-label">Улыбок</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="statsStretches">0</div>
+                    <div class="stat-label">Растяжек</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="statsSquats">0</div>
+                    <div class="stat-label">Приседаний</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="statsYawns">0</div>
+                    <div class="stat-label">Зеваний</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="statsPomodoros">0</div>
+                    <div class="stat-label">Помидоров</div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="font-semibold mb-4">📊 График Недельного Благополучия</h3>
+                <div class="flex items-flex-end justify-around gap-2 p-4 bg-gray-50 rounded-lg" style="height: 250px;">
+                    <div id="weekChart" class="flex justify-around gap-2 w-full items-flex-end"></div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="font-semibold mb-4">⏱️ Время Сеанса</h3>
+                <div class="stat-box">
+                    <div id="statsSessionTime" class="text-2xl font-bold">00:00:00</div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary w-full" onclick="closeModal('statsModal')">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Achievement Modal -->
+    <div id="achievementModal" class="modal z-100">
+        <div class="modal-content max-w-4xl">
+            <h2 class="text-2xl font-bold mb-6 text-center">🏆 Достижения</h2>
+            <p class="text-center text-gray-600 mb-8">Собирайте значки достижений, достигая целей благополучия</p>
+
+            <div id="achievementGrid" class="grid grid-cols-4 md:grid-cols-6 gap-4">
+                <!-- Achievements will be populated by JS -->
+            </div>
+
+            <button class="btn btn-primary w-full mt-8" onclick="closeModal('achievementModal')">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Shortcuts Help Modal -->
+    <div id="shortcutsModal" class="modal z-100">
+        <div class="modal-content max-w-2xl">
+            <h2 class="text-2xl font-bold mb-6">⌨️ Быстрые Клавиши</h2>
+
+            <div id="shortcutsList" class="space-y-2 mb-8">
+                <!-- Shortcuts will be populated by JS -->
+            </div>
+
+            <button class="btn btn-primary w-full" onclick="closeModal('shortcutsModal')">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="nav-bar fixed top-0 left-0 right-0">
+        <div class="nav-title">ZenFlow</div>
+        <div class="flex-1 flex justify-center">
+            <div id="weatherWidget" class="weather-widget" style="display: none;">
+                <span class="weather-icon" id="weatherIcon">☀️</span>
+                <span class="weather-temp" id="weatherTemp">--°C</span>
+                <span id="weatherDesc">--</span>
+            </div>
+        </div>
+        <div class="nav-actions">
+            <button class="nav-btn" title="Статистика" onclick="openModal('statsModal')">📊</button>
+            <button class="nav-btn" title="Быстрые клавиши" onclick="openModal('shortcutsModal')">⌨️</button>
+            <button class="nav-btn" title="Настройки" onclick="openModal('settingsModal')">⚙️</button>
+            <button class="nav-btn" title="Диагностика" onclick="openModal('diagnosticsModal')">🔧</button>
+        </div>
+    </nav>
+
+    <!-- Main Content Grid -->
+    <div class="pt-16 pb-4 px-4 h-screen">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 h-full">
+
+            <!-- LEFT COLUMN -->
+            <div class="column-left space-y-4">
+                <!-- Garden & Streak -->
+                <div class="glass-card">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h3 class="font-bold text-lg">🏡 Ваш Сад</h3>
+                            <p class="text-sm text-gray-600 mt-1">Растет с вашим здоровьем</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-purple-600" id="streakCount">0</div>
+                            <div class="text-xs text-gray-500">дней 🔥</div>
+                        </div>
+                    </div>
+                    <div class="text-5xl text-center py-4" id="gardenEmoji">🌱</div>
+                    <div class="text-xs text-gray-600 text-center">
+                        <span id="streakStatus">Начните новую серию сегодня!</span>
+                    </div>
+                </div>
+
+                <!-- Daily Goals -->
+                <div class="glass-card">
+                    <h3 class="font-bold text-lg mb-4">🎯 Ежедневные Цели</h3>
+                    <div class="goal-container">
+                        <div class="goal-item">
+                            <svg class="goal-ring" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="#e5e7eb" stroke-width="8"/>
+                                <circle class="progress-ring-circle" cx="50" cy="50" r="45" fill="none" stroke="url(#grad1)" stroke-width="8"
+                                    stroke-dasharray="282.7" stroke-dashoffset="282.7" stroke-linecap="round"/>
+                                <defs>
+                                    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <text x="50" y="55" text-anchor="middle" font-size="24" font-weight="bold" fill="#667eea" id="waterProgress">0</text>
+                            </svg>
+                            <div class="goal-label">Вода</div>
+                        </div>
+                        <div class="goal-item">
+                            <svg class="goal-ring" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="#e5e7eb" stroke-width="8"/>
+                                <circle class="progress-ring-circle" cx="50" cy="50" r="45" fill="none" stroke="url(#grad2)" stroke-width="8"
+                                    stroke-dasharray="282.7" stroke-dashoffset="282.7" stroke-linecap="round"/>
+                                <defs>
+                                    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <text x="50" y="55" text-anchor="middle" font-size="24" font-weight="bold" fill="#667eea" id="smileProgress">0</text>
+                            </svg>
+                            <div class="goal-label">Улыбки</div>
+                        </div>
+                        <div class="goal-item">
+                            <svg class="goal-ring" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="#e5e7eb" stroke-width="8"/>
+                                <circle class="progress-ring-circle" cx="50" cy="50" r="45" fill="none" stroke="url(#grad3)" stroke-width="8"
+                                    stroke-dasharray="282.7" stroke-dashoffset="282.7" stroke-linecap="round"/>
+                                <defs>
+                                    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <text x="50" y="55" text-anchor="middle" font-size="24" font-weight="bold" fill="#667eea" id="stretchProgress">0</text>
+                            </svg>
+                            <div class="goal-label">Растяжки</div>
+                        </div>
+                        <div class="goal-item">
+                            <svg class="goal-ring" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="#e5e7eb" stroke-width="8"/>
+                                <circle class="progress-ring-circle" cx="50" cy="50" r="45" fill="none" stroke="url(#grad4)" stroke-width="8"
+                                    stroke-dasharray="282.7" stroke-dashoffset="282.7" stroke-linecap="round"/>
+                                <defs>
+                                    <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <text x="50" y="55" text-anchor="middle" font-size="24" font-weight="bold" fill="#667eea" id="sqatProgress">0</text>
+                            </svg>
+                            <div class="goal-label">Приседания</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Biometrics -->
+                <div class="glass-card">
+                    <h3 class="font-bold text-lg mb-4">💓 Биометрика</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-semibold">Осанка</span>
+                                <span class="text-sm text-purple-600" id="postureScore">--</span>
+                            </div>
+                            <div class="health-bar">
+                                <div class="health-bar-fill" id="postureBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-semibold">Сонливость</span>
+                                <span class="text-sm text-purple-600" id="alertnessScore">--</span>
+                            </div>
+                            <div class="health-bar">
+                                <div class="health-bar-fill" id="alertnessBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-semibold">Активность</span>
+                                <span class="text-sm text-purple-600" id="activityScore">--</span>
+                            </div>
+                            <div class="health-bar">
+                                <div class="health-bar-fill" id="activityBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pomodoro Timer -->
+                <div class="glass-card">
+                    <h3 class="font-bold text-lg mb-4 text-center">🍅 Помидор</h3>
+                    <div class="timer-display" id="pomodoroTimer">25:00</div>
+                    <div class="pomodoro-status" id="pomodoroStatus">Работа: 25 минут</div>
+                    <div class="flex gap-2 mt-4">
+                        <button class="btn btn-secondary flex-1 text-sm" id="pomodoroStartBtn" onclick="startPomodoro()">Начать</button>
+                        <button class="btn btn-secondary flex-1 text-sm" id="pomodoroStopBtn" onclick="stopPomodoro()" style="display: none;">Стоп</button>
+                        <button class="btn btn-secondary text-sm" onclick="resetPomodoro()">Сброс</button>
+                    </div>
+                </div>
+
+                <!-- Caffeine Tracker -->
+                <div class="glass-card">
+                    <h3 class="font-bold text-lg mb-4">☕ Кофеин</h3>
+                    <div class="stat-box mb-4">
+                        <div class="stat-number" id="caffeineMg">0</div>
+                        <div class="stat-label">MG Сегодня</div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-sm btn-primary flex-1" onclick="addCaffeine('coffee')">☕ Кофе</button>
+                        <button class="btn btn-sm btn-primary flex-1" onclick="addCaffeine('tea')">🫖 Чай</button>
+                        <button class="btn btn-sm btn-primary flex-1" onclick="addCaffeine('energy')">⚡ Энергия</button>
+                    </div>
+                </div>
+
+                <!-- Health Score -->
+                <div class="glass-card">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-lg">💚 Здоровье</h3>
+                        <span class="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full font-bold" id="healthTrend">НОРМА</span>
+                    </div>
+                    <div class="health-score-ring" id="healthScoreRing" style="background: conic-gradient(#10b981 0%, #10b981 100%, #e5e7eb 100%);">
+                        <span id="healthScoreValue" class="text-emerald-600">100</span>
+                    </div>
+                    <div class="mt-3 space-y-2">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-xs font-semibold">Стресс</span>
+                                <span class="text-xs font-bold" id="stressValue">Низкий</span>
+                            </div>
+                            <div class="stress-indicator w-full" id="stressBar" style="background: linear-gradient(90deg, #10b981, #10b981 20%, #e5e7eb 20%);"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emotion Timeline -->
+                <div class="glass-card">
+                    <h3 class="font-bold text-lg mb-3">🎭 Эмоции Дня</h3>
+                    <div id="emotionTimeline" class="flex flex-wrap gap-1 min-h-[40px] items-center">
+                        <span class="text-xs text-gray-400">Данные появятся по ходу сессии...</span>
+                    </div>
+                    <div class="mt-2 flex justify-between text-[10px] text-gray-400">
+                        <span>Начало</span>
+                        <span>Сейчас</span>
+                    </div>
+                </div>
+
+                <!-- Daily Challenges -->
+                <div class="glass-card">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-lg">🏅 Вызовы Дня</h3>
+                        <button class="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full font-bold cursor-pointer hover:bg-purple-200 transition" onclick="generateDailyChallenges()">🔄 Новые</button>
+                    </div>
+                    <div id="challengesList">
+                        <div class="text-xs text-gray-400 text-center py-2">Загрузка вызовов...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CENTER COLUMN -->
+            <div class="md:col-span-2 lg:col-span-2 flex flex-col">
+                <!-- Video Container -->
+                <div class="video-container flex-grow">
+                    <video id="webcamVideo" autoplay playsinline muted></video>
+                    <canvas id="canvasOverlay"></canvas>
+                </div>
+
+                <!-- Controls -->
+                <div class="glass-card">
+                    <div class="controls-grid">
+                        <button class="control-btn active" id="toggleAudioBtn" title="Вкл/Выкл Звук (M)" onclick="toggleAudio()">🔊</button>
+                        <button class="control-btn" id="vrModeBtn" title="VR Режим (V)" onclick="toggleVRMode()">🥽</button>
+                        <button class="control-btn" id="snapshotBtn" title="Снимок (S)" onclick="takeSnapshot()">📸</button>
+                        <button class="control-btn" id="breathingBtn" title="Дыхание (B)" onclick="openModal('breathingModal')">💨</button>
+                        <button class="control-btn" id="voiceCmdBtn" title="Голосовые команды (G)" onclick="toggleVoiceCommands()">🎤</button>
+                        <button class="control-btn" id="aiReportBtn" title="AI Отчёт (R)" onclick="generateAIReport()">📋</button>
+                        <button class="control-btn" id="insightsBtn" title="AI Инсайты (I)" onclick="requestAIInsight()">💡</button>
+                    </div>
+
+                    <!-- Ambient Voice Atmosphere -->
+                    <div class="mb-4">
+                        <label class="text-sm font-semibold mb-2 block">🎙️ Голосовая Атмосфера</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button class="btn btn-sm btn-secondary w-full" onclick="playAmbientSound('rain')">🌧️ Дождь</button>
+                            <button class="btn btn-sm btn-secondary w-full" onclick="playAmbientSound('forest')">🌲 Лес</button>
+                            <button class="btn btn-sm btn-secondary w-full" onclick="playAmbientSound('ocean')">🌊 Океан</button>
+                            <button class="btn btn-sm btn-secondary w-full" onclick="playAmbientSound('fire')">🔥 Камин</button>
+                            <button class="btn btn-sm btn-secondary w-full" onclick="playAmbientSound('white')">🧠 Фокус</button>
+                            <button class="btn btn-sm btn-secondary w-full" onclick="playAmbientSound('lofi')">☕ Кафе</button>
+                        </div>
+                        <button class="btn btn-sm btn-secondary w-full mt-2" onclick="stopAmbientSounds()" style="background:rgba(239,68,68,0.1); color:#ef4444;">⏹️ Стоп атмосфера</button>
+                    </div>
+
+                    <!-- Mood Tracker -->
+                    <div>
+                        <label class="text-sm font-semibold mb-2 block">😊 Как вы себя чувствуете?</label>
+                        <div class="mood-grid">
+                            <button class="mood-btn" onclick="logMood('terrible')">😢</button>
+                            <button class="mood-btn" onclick="logMood('bad')">😕</button>
+                            <button class="mood-btn" onclick="logMood('ok')">😐</button>
+                            <button class="mood-btn" onclick="logMood('good')">🙂</button>
+                            <button class="mood-btn" onclick="logMood('great')">😄</button>
+                            <button class="mood-btn" onclick="logMood('amazing')">🤩</button>
+                            <button class="mood-btn" onclick="logMood('zen')">😌</button>
+                            <button class="mood-btn" onclick="logMood('energetic')">⚡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Snapshots -->
+                <!-- VIDEO ANALYTICS PANEL -->
+                <div class="glass-card" id="sceneAnalysisPanel" style="display:none; border-left: 4px solid #8b5cf6;">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-xl animate-pulse">🧠</span>
+                        <h3 class="font-bold text-sm uppercase tracking-widest text-purple-700">Видеоаналитика</h3>
+                        <span class="text-[9px] bg-purple-100 text-purple-600 px-2 py-0.5 rounded-full font-bold">LIVE</span>
+                    </div>
+                    <p id="sceneAnalysisText" class="text-sm leading-relaxed text-gray-700" style="font-style:italic;">Анализ сцены...</p>
+                    <div class="flex gap-2 mt-2">
+                        <span class="text-[9px] bg-gray-100 px-2 py-0.5 rounded-full font-bold text-gray-500">Обновление каждые 30 сек</span>
+                    </div>
+                </div>
+
+                <!-- Voice Command Status -->
+                <div class="glass-card" id="voiceCmdPanel" style="display:none; border-left: 4px solid #ef4444;">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="voice-cmd-badge voice-cmd-active" id="voiceCmdBadge">🔴 REC</span>
+                        <h3 class="font-bold text-sm uppercase tracking-widest text-red-600">Голосовое Управление</h3>
+                    </div>
+                    <p id="voiceCmdText" class="text-sm text-gray-700">Слушаю команды... Скажите: "вода", "помидор", "дыхание", "отчёт", "пауза"</p>
+                </div>
+
+                <!-- AI Insights Panel -->
+                <div class="glass-card" id="aiInsightsPanel" style="display:none; border-left: 4px solid #f59e0b;">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-xl">💡</span>
+                        <h3 class="font-bold text-sm uppercase tracking-widest text-amber-600">AI Инсайты</h3>
+                    </div>
+                    <div id="aiInsightsContent" class="space-y-2">
+                        <p class="text-sm text-gray-600">Анализ вашей сессии...</p>
+                    </div>
+                </div>
+
+                <!-- AI Report Panel -->
+                <div class="glass-card" id="aiReportPanel" style="display:none; border-left: 4px solid #06b6d4;">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-xl">📋</span>
+                        <h3 class="font-bold text-sm uppercase tracking-widest text-cyan-600">AI Отчёт Сессии</h3>
+                    </div>
+                    <div id="aiReportContent" class="text-sm leading-relaxed text-gray-700">
+                        <p>Нажмите кнопку 📋 для генерации AI-отчёта</p>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h3 class="font-bold text-lg mb-2">📷 Галерея Моментов</h3>
+                    <p class="text-xs text-gray-600 mb-2">Ваши ключевые моменты</p>
+                    <div class="snapshot-grid" id="snapshotGallery">
+                        <!-- Snapshots will be added here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="column-right">
+                <!-- AI Chat Assistant -->
+                <div class="glass-card h-full flex flex-col">
+                    <h3 class="font-bold text-lg mb-4">🤖 Помощник</h3>
+
+                    <div class="flex-grow overflow-y-auto mb-4 scrollbar-hide">
+                        <div id="chatMessages" class="space-y-3 text-sm">
+                            <div class="p-3 bg-purple-100 rounded-lg">
+                                <p class="font-semibold text-purple-900">Добро пожаловать в ZenFlow!</p>
+                                <p class="text-sm text-purple-800 mt-1">Я здесь, чтобы помочь вам достичь благополучия. Спросите меня о здоровье, фокусе или мотивации.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <input type="text" id="chatInput" class="input-field text-sm" placeholder="Спросите меня...">
+                        <button class="control-btn" onclick="sendChatMessage()" title="Отправить">↩️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import vision from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0';
+
+        const { FaceLandmarker, HandLandmarker, ObjectDetector, FilesetResolver } = vision;
+
+        // ==================== STATE ====================
+        const state = {
+            isRunning: false,
+            videoStream: null,
+            faceLandmarker: null,
+            handLandmarker: null,
+            objectDetector: null,
+
+            // Session Data
+            sessionStartTime: Date.now(),
+            waterCount: 0,
+            smileCount: 0,
+            stretchCount: 0,
+            squatCount: 0,
+            yawnCount: 0,
+            pomodoroCount: 0,
+            moodLog: [],
+            lastCaptureTime: 0,
+            lastSquatTime: 0,
+            lastSmileTime: 0,
+            lastStretchTime: 0,
+            lastYawnTime: 0,
+
+            // Pomodoro
+            pomodoroTimeLeft: 25 * 60,
+            pomodoroIsRunning: false,
+            pomodoroSession: 'work',
+            pomodoroIntervalId: null,
+
+            // Preferences
+            darkMode: false,
+            audioEnabled: true,
+            vrMode: false,
+
+            // Goals
+            goals: {
+                water: 8,
+                smiles: 10,
+                stretches: 5,
+                squats: 20,
+                focus: 2
+            },
+
+            // Streak
+            streak: 0,
+            lastActiveDate: null,
+
+            // Achievements
+            achievements: {},
+
+            // FPS Counter
+            lastFrameTime: 0,
+            fps: 0,
+            fpsHistory: [],
+
+            // Ambient Sounds
+            audioContext: null,
+            currentAmbientOscillators: [],
+            ambientGain: null,
+
+            // Chat
+            chatHistory: [],
+
+            // Eyes
+            lastEyeBreakTime: Date.now(),
+            eyeBreakInterval: 20 * 60 * 1000,
+
+            // Caffeine
+            caffeineMg: 0,
+
+            // Features Toggle
+            features: {
+                faceLandmark: true,
+                handLandmark: true,
+                objectDetection: true,
+                posture: true,
+                smileCounter: true,
+                hydration: true
+            },
+
+            // Stress & Health
+            stressLevel: 0,
+            healthScore: 100,
+            emotionTimeline: [],
+            dailyChallenges: [],
+            challengeCompleted: {},
+
+            // Voice Commands
+            voiceRecognitionActive: false,
+            speechRecognition: null,
+
+            // AI Insights
+            lastInsightTime: 0,
+            insightHistory: [],
+
+            // Gesture tracking
+            lastGestureTime: 0,
+            gestureHistory: []
+        };
+
+        // ==================== INITIALIZATION ====================
+        async function initializeApp() {
+            console.log('Initializing ZenFlow...');
+
+            // Load persisted data
+            loadFromLocalStorage();
+
+            // Initialize audio context
+            initAudioContext();
+
+            // Initialize MediaPipe
+            await initializeMediaPipe();
+
+            // Start webcam
+            await startWebcam();
+
+            // Start AI loop
+            startAILoop();
+
+            // Initialize pomodoro
+            updatePomodoroDisplay();
+
+            // Setup shortcuts
+            setupKeyboardShortcuts();
+
+            // Setup event listeners
+            setupEventListeners();
+
+            // Request notification permission
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+
+            // Load weather
+            loadWeather();
+
+            // Initialize achievements
+            initializeAchievements();
+
+            // Update UI
+            updateUI();
+
+            // Auto save every 30 seconds
+            setInterval(saveToLocalStorage, 30000);
+
+            // Voice status report every 5 minutes
+            setInterval(voiceStatusReport, 300000);
+
+            // Initialize tracking
+            state.lastDetectedObjects = [];
+
+            console.log('ZenFlow initialized successfully!');
+
+            // Welcome speech — queued for after first user click
+            pendingFirstSpeak = "Добро пожаловать в ZenFlow! Все системы активны. Камера подключена. Нейросети загружены. Голосовой ассистент работает. Я буду озвучивать все уведомления, данные и события на экране. Нажмите любую кнопку чтобы я начал говорить!";
+            // Also show visual hint
+            setTimeout(() => {
+                const fl = document.getElementById('voiceStatusFloat');
+                const ft = document.getElementById('voiceStatusText');
+                if (fl && ft) {
+                    ft.textContent = '👆 Нажмите на экран чтобы активировать голос';
+                    fl.style.opacity = '1';
+                }
+            }, 1500);
+        }
+
+        async function initializeMediaPipe() {
+            try {
+                const filesetResolver = await FilesetResolver.forVisionTasks(
+                    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm'
+                );
+
+                state.faceLandmarker = await FaceLandmarker.createFromOptions(filesetResolver, {
+                    baseOptions: { modelAssetPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm/face_landmarker.task' },
+                    runningMode: 'VIDEO',
+                    numFaces: 4
+                });
+
+                state.handLandmarker = await HandLandmarker.createFromOptions(filesetResolver, {
+                    baseOptions: { modelAssetPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm/hand_landmarker.task' },
+                    runningMode: 'VIDEO',
+                    numHands: 2
+                });
+
+                state.objectDetector = await ObjectDetector.createFromOptions(filesetResolver, {
+                    baseOptions: { modelAssetPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm/object_detector.tflite' },
+                    runningMode: 'VIDEO',
+                    scoreThreshold: 0.5
+                });
+
+                updateModelStatus();
+            } catch (error) {
+                console.error('Failed to initialize MediaPipe:', error);
+                addEventLog('ERROR: MediaPipe initialization failed');
+            }
+        }
+
+        async function startWebcam() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'user' }
+                });
+
+                const video = document.getElementById('webcamVideo');
+                video.srcObject = stream;
+                state.videoStream = stream;
+                state.isRunning = true;
+
+                addEventLog('Webcam started successfully');
+            } catch (error) {
+                console.error('Failed to start webcam:', error);
+                addEventLog('ERROR: Could not access webcam');
+                alert('Пожалуйста, разрешите доступ к веб-камере');
+            }
+        }
+
+        function initAudioContext() {
+            if (!state.audioContext) {
+                state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                state.ambientGain = state.audioContext.createGain();
+                state.ambientGain.connect(state.audioContext.destination);
+                state.ambientGain.gain.value = 0.3;
+            }
+        }
+
+        // ==================== VOICE NARRATOR ENGINE (ENHANCED) ====================
+        const voiceQueue = [];
+        let isSpeaking = false;
+        let lastVoiceTime = {};
+        let cachedRuVoice = null;
+        let voicesLoaded = false;
+        let userHasInteracted = false;
+        let pendingFirstSpeak = null;
+
+        const VOICE_COOLDOWNS = {
+            smile: 8000, posture: 20000, yawn: 15000, stretch: 6000,
+            phone: 25000, water: 5000, heart: 10000, zen: 15000,
+            facetTouch: 12000, scene: 45000, motivation: 60000,
+            squats: 8000, object: 10000, eyeBreak: 120000,
+            pomodoro: 5000, caffeine: 5000, mood: 5000, general: 3000
+        };
+
+        // Preload and cache Russian voice
+        function _loadVoices() {
+            if (!window.speechSynthesis) return;
+            const voices = window.speechSynthesis.getVoices();
+            if (voices.length > 0) {
+                voicesLoaded = true;
+                // Prefer Milena, Yuri, or any Russian voice
+                cachedRuVoice = voices.find(v => v.lang === 'ru-RU' && v.name.includes('Milena'))
+                    || voices.find(v => v.lang === 'ru-RU' && v.name.includes('Yuri'))
+                    || voices.find(v => v.lang === 'ru-RU')
+                    || voices.find(v => v.lang.startsWith('ru'))
+                    || null;
+                console.log('[ZenFlow Voice] Voices loaded:', voices.length, 'Russian:', cachedRuVoice?.name || 'default');
+
+                // Speak pending message if any
+                if (pendingFirstSpeak && userHasInteracted) {
+                    _doSpeak(pendingFirstSpeak);
+                    pendingFirstSpeak = null;
+                }
+            }
+        }
+
+        if (window.speechSynthesis) {
+            _loadVoices();
+            window.speechSynthesis.onvoiceschanged = _loadVoices;
+            // Chrome needs a retry
+            setTimeout(_loadVoices, 100);
+            setTimeout(_loadVoices, 500);
+            setTimeout(_loadVoices, 1500);
+        }
+
+        // Track user interaction (browsers require click before speech)
+        function _onFirstInteraction() {
+            if (userHasInteracted) return;
+            userHasInteracted = true;
+            console.log('[ZenFlow Voice] User interaction detected, speech unlocked');
+
+            // Unblock speech synthesis
+            if (window.speechSynthesis) {
+                const unlock = new SpeechSynthesisUtterance('');
+                unlock.volume = 0;
+                window.speechSynthesis.speak(unlock);
+            }
+
+            // Speak pending message
+            if (pendingFirstSpeak) {
+                setTimeout(() => {
+                    _doSpeak(pendingFirstSpeak);
+                    pendingFirstSpeak = null;
+                }, 200);
+            }
+
+            document.removeEventListener('click', _onFirstInteraction);
+            document.removeEventListener('touchstart', _onFirstInteraction);
+            document.removeEventListener('keydown', _onFirstInteraction);
+        }
+
+        document.addEventListener('click', _onFirstInteraction, { once: false });
+        document.addEventListener('touchstart', _onFirstInteraction, { once: false });
+        document.addEventListener('keydown', _onFirstInteraction, { once: false });
+
+        function speakZen(text, category = 'general', priority = false) {
+            if (!state.audioEnabled) return;
+            if (!window.speechSynthesis) return;
+            if (!text || text.trim().length === 0) return;
+
+            const now = Date.now();
+            const cooldown = VOICE_COOLDOWNS[category] || 3000;
+            if (lastVoiceTime[category] && now - lastVoiceTime[category] < cooldown) return;
+            lastVoiceTime[category] = now;
+
+            // If user hasn't clicked yet, queue for later
+            if (!userHasInteracted) {
+                pendingFirstSpeak = text;
+                return;
+            }
+
+            if (priority) {
+                window.speechSynthesis.cancel();
+                voiceQueue.length = 0;
+                isSpeaking = false;
+                setTimeout(() => _doSpeak(text), 50);
+            } else {
+                voiceQueue.push(text);
+                _processVoiceQueue();
+            }
+        }
+
+        function _doSpeak(text) {
+            if (!window.speechSynthesis) return;
+            if (!text || text.trim().length === 0) return;
+
+            // Chrome bug: synthesis gets stuck, cancel helps
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+            }
+
+            isSpeaking = true;
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.lang = 'ru-RU';
+            utter.pitch = 1.0;
+            utter.rate = 1.0;
+            utter.volume = 1.0;
+
+            // Use cached Russian voice
+            if (cachedRuVoice) {
+                utter.voice = cachedRuVoice;
+            } else {
+                // Try one more time to load voices
+                _loadVoices();
+                if (cachedRuVoice) utter.voice = cachedRuVoice;
+            }
+
+            utter.onend = () => {
+                isSpeaking = false;
+                setTimeout(_processVoiceQueue, 100);
+            };
+            utter.onerror = (e) => {
+                console.warn('[ZenFlow Voice] Error:', e.error);
+                isSpeaking = false;
+                setTimeout(_processVoiceQueue, 100);
+            };
+
+            // Chrome long-text bug: break into chunks if too long
+            if (text.length > 200) {
+                const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+                let chunk = '';
+                sentences.forEach(s => {
+                    if ((chunk + s).length < 180) {
+                        chunk += s;
+                    } else {
+                        if (chunk) voiceQueue.unshift(chunk.trim());
+                        chunk = s;
+                    }
+                });
+                if (chunk) {
+                    utter.text = chunk.trim();
+                }
+            }
+
+            // Show floating voice indicator
+            const floatEl = document.getElementById('voiceStatusFloat');
+            const floatText = document.getElementById('voiceStatusText');
+            if (floatEl && floatText) {
+                floatText.textContent = text.substring(0, 80) + (text.length > 80 ? '...' : '');
+                floatEl.style.opacity = '1';
+                floatEl.style.pointerEvents = 'auto';
+            }
+
+            window.speechSynthesis.speak(utter);
+
+            // Chrome bug: speech can freeze after 15s, keep it alive
+            let watchdog = setInterval(() => {
+                if (!window.speechSynthesis.speaking) {
+                    clearInterval(watchdog);
+                    return;
+                }
+                window.speechSynthesis.pause();
+                window.speechSynthesis.resume();
+            }, 10000);
+
+            utter.onend = () => {
+                clearInterval(watchdog);
+                isSpeaking = false;
+                // Hide floating indicator
+                const fl = document.getElementById('voiceStatusFloat');
+                if (fl) { fl.style.opacity = '0'; fl.style.pointerEvents = 'none'; }
+                setTimeout(_processVoiceQueue, 100);
+            };
+            utter.onerror = () => {
+                clearInterval(watchdog);
+                isSpeaking = false;
+                const fl = document.getElementById('voiceStatusFloat');
+                if (fl) { fl.style.opacity = '0'; fl.style.pointerEvents = 'none'; }
+                setTimeout(_processVoiceQueue, 100);
+            };
+        }
+
+        function _processVoiceQueue() {
+            if (isSpeaking || voiceQueue.length === 0) return;
+            if (!userHasInteracted) return;
+            _doSpeak(voiceQueue.shift());
+        }
+
+        // ==================== MOTIVATIONAL COACH ====================
+        const motivationalPhrases = [
+            "Ты молодец! Продолжай в том же духе!",
+            "Каждая минута фокуса делает тебя сильнее.",
+            "Помни: маленькие шаги ведут к большим результатам.",
+            "Ты уже дольше, чем большинство. Гордись собой!",
+            "Вода, улыбка, осанка — три кита продуктивности.",
+            "Сделай глубокий вдох. Ты на правильном пути.",
+            "Твоё тело — твой храм. Заботься о нём.",
+            "Фокус — это суперсила. У тебя она есть.",
+            "Каждое приседание — инвестиция в здоровье.",
+            "Помни пить воду. Твой мозг на 75% состоит из воды.",
+            "Улыбка запускает гормоны счастья. Улыбнись!",
+            "Ровная осанка — ровный ум. Выпрямись!",
+            "Ты создаёшь свою лучшую версию прямо сейчас.",
+            "Перерыв — это не слабость, а мудрость.",
+            "Твой стрик растёт. Не сдавайся!",
+        ];
+
+        let lastMotivationTime = 0;
+        function motivationalCoach() {
+            const now = Date.now();
+            const sessionMins = (now - state.sessionStartTime) / 60000;
+            if (now - lastMotivationTime < 120000) return; // every 2 min max
+            if (sessionMins < 2) return;
+            lastMotivationTime = now;
+
+            // Context-aware motivation
+            let phrase = '';
+            if (state.waterCount === 0 && sessionMins > 5) {
+                phrase = "Привет! Ты уже " + Math.round(sessionMins) + " минут за экраном и ни разу не попил воды. Пора!";
+            } else if (state.smileCount === 0 && sessionMins > 10) {
+                phrase = "Улыбнись! Ни одной улыбки за " + Math.round(sessionMins) + " минут. Давай исправим это!";
+            } else if (state.squatCount === 0 && sessionMins > 20) {
+                phrase = "Может быть пора размяться? Встань и сделай пару приседаний!";
+            } else {
+                // General motivation based on progress
+                const total = state.waterCount + state.smileCount + state.stretchCount + state.squatCount;
+                if (total > 20) {
+                    phrase = "Невероятно! Ты набрал уже " + total + " очков здоровья. Ты супергерой!";
+                } else {
+                    phrase = motivationalPhrases[Math.floor(Math.random() * motivationalPhrases.length)];
+                }
+            }
+
+            speakZen(phrase, 'motivation');
+            addChatMessage('assistant', '💪 ' + phrase);
+            addEventLog('🎯 Мотивация: ' + phrase);
+        }
+
+        setInterval(motivationalCoach, 30000); // check every 30 sec
+
+        // ==================== VIDEO ANALYTICS (Gemini Vision) ====================
+        let lastSceneAnalysis = 0;
+        let isAnalyzingScene = false;
+        const SCENE_ANALYSIS_INTERVAL = 30000; // every 30 sec
+
+        async function analyzeSceneWithVision() {
+            if (isAnalyzingScene) return;
+            const now = Date.now();
+            if (now - lastSceneAnalysis < SCENE_ANALYSIS_INTERVAL) return;
+            lastSceneAnalysis = now;
+
+            const apiKey = document.getElementById('geminiApiKey')?.value || '';
+            if (!apiKey) {
+                // Offline scene analysis using MediaPipe data
+                offlineSceneNarration();
+                return;
+            }
+
+            isAnalyzingScene = true;
+            try {
+                const video = document.getElementById('webcamVideo');
+                const snapCanvas = document.createElement('canvas');
+                snapCanvas.width = 320; // low res for speed
+                snapCanvas.height = 240;
+                const sCtx = snapCanvas.getContext('2d');
+                sCtx.drawImage(video, 0, 0, 320, 240);
+                const base64 = snapCanvas.toDataURL('image/jpeg', 0.6).split(',')[1];
+
+                const res = await fetch(
+                    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey,
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [
+                                    { text: 'Ты AI-ассистент здоровья ZenFlow. Опиши кратко (максимум 2 предложения) что ты видишь на камере. Прокомментируй осанку, выражение лица, окружение. Дай краткий мотивирующий совет. Отвечай по-русски.' },
+                                    { inlineData: { mimeType: 'image/jpeg', data: base64 } }
+                                ]
+                            }]
+                        })
+                    }
+                );
+
+                if (res.ok) {
+                    const data = await res.json();
+                    const analysis = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (analysis) {
+                        speakZen(analysis, 'scene', true);
+                        addChatMessage('assistant', '👁️ ' + analysis);
+                        addEventLog('🎥 Видеоанализ: ' + analysis.substring(0, 80) + '...');
+                        document.getElementById('sceneAnalysisText').textContent = analysis;
+                        document.getElementById('sceneAnalysisPanel').style.display = 'block';
+                    }
+                }
+            } catch(e) {
+                console.error('Scene analysis error:', e);
+            } finally {
+                isAnalyzingScene = false;
+            }
+        }
+
+        function offlineSceneNarration() {
+            // Build scene description from current MediaPipe data
+            const parts = [];
+            const sessionMins = Math.round((Date.now() - state.sessionStartTime) / 60000);
+
+            parts.push("Вы работаете уже " + sessionMins + " минут.");
+
+            // Objects in view
+            if (state.lastDetectedObjects && state.lastDetectedObjects.length > 0) {
+                const objNames = state.lastDetectedObjects.map(o => {
+                    const translations = {
+                        'person': 'человек', 'bottle': 'бутылка', 'cup': 'чашка',
+                        'cell phone': 'телефон', 'laptop': 'ноутбук', 'book': 'книга',
+                        'chair': 'стул', 'keyboard': 'клавиатура', 'mouse': 'мышь',
+                        'tv': 'монитор', 'potted plant': 'растение', 'cat': 'кошка',
+                        'dog': 'собака', 'clock': 'часы', 'vase': 'ваза'
+                    };
+                    return translations[o] || o;
+                });
+                parts.push("Я вижу: " + [...new Set(objNames)].join(', ') + ".");
+            }
+
+            // Posture commentary
+            const postureEl = document.getElementById('postureScore');
+            if (postureEl) {
+                const score = parseInt(postureEl.textContent);
+                if (score < 50) parts.push("Осанка требует внимания. Выпрямитесь!");
+                else if (score > 80) parts.push("Осанка отличная!");
+            }
+
+            // Stats summary
+            if (state.waterCount > 0) parts.push("Выпито воды: " + state.waterCount + ".");
+            if (state.smileCount > 0) parts.push("Улыбок сегодня: " + state.smileCount + ".");
+
+            const narration = parts.join(' ');
+            speakZen(narration, 'scene');
+            addChatMessage('assistant', '📊 ' + narration);
+            document.getElementById('sceneAnalysisText').textContent = narration;
+            document.getElementById('sceneAnalysisPanel').style.display = 'block';
+        }
+
+        setInterval(analyzeSceneWithVision, 15000); // check every 15 sec
+
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT') return;
+
+                switch(e.key.toLowerCase()) {
+                    case 'v':
+                        toggleVRMode();
+                        break;
+                    case 'm':
+                        toggleAudio();
+                        break;
+                    case 'b':
+                        openModal('breathingModal');
+                        break;
+                    case 'p':
+                        if (state.pomodoroIsRunning) stopPomodoro();
+                        else startPomodoro();
+                        break;
+                    case 's':
+                        takeSnapshot();
+                        break;
+                    case 'g':
+                        toggleVoiceCommands();
+                        break;
+                    case 'r':
+                        generateAIReport();
+                        break;
+                    case 'i':
+                        requestAIInsight();
+                        break;
+                    case '?':
+                        openModal('shortcutsModal');
+                        break;
+                    case 'escape':
+                        closeAllModals();
+                        break;
+                    case ' ':
+                        e.preventDefault();
+                        logWater();
+                        break;
+                }
+            });
+        }
+
+        function setupEventListeners() {
+            document.getElementById('darkModeToggle').addEventListener('change', (e) => {
+                state.darkMode = e.target.checked;
+                applyDarkMode();
+                saveToLocalStorage();
+            });
+
+            document.getElementById('chatInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendChatMessage();
+            });
+        }
+
+        // ==================== AI LOOP ====================
+        function startAILoop() {
+            const video = document.getElementById('webcamVideo');
+            const canvas = document.getElementById('canvasOverlay');
+            const ctx = canvas.getContext('2d');
+
+            // Set canvas size
+            function updateCanvasSize() {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+            }
+
+            video.addEventListener('loadedmetadata', updateCanvasSize);
+            window.addEventListener('resize', updateCanvasSize);
+
+            async function analyzeFrame() {
+                if (!state.isRunning || !video.srcObject) {
+                    requestAnimationFrame(analyzeFrame);
+                    return;
+                }
+
+                try {
+                    // Update FPS
+                    const now = performance.now();
+                    const deltaTime = now - state.lastFrameTime;
+                    state.lastFrameTime = now;
+                    state.fps = Math.round(1000 / deltaTime);
+
+                    // Clear canvas
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    // Run MediaPipe models
+                    if (state.features.faceLandmark && state.faceLandmarker) {
+                        const faceLandmarks = state.faceLandmarker.detectForVideo(video, now);
+                        analyzeFaceLandmarks(faceLandmarks, ctx);
+                    }
+
+                    if (state.features.handLandmark && state.handLandmarker) {
+                        const handLandmarks = state.handLandmarker.detectForVideo(video, now);
+                        analyzeHandLandmarks(handLandmarks, ctx);
+                    }
+
+                    if (state.features.objectDetection && state.objectDetector) {
+                        const objects = state.objectDetector.detectForVideo(video, now);
+                        analyzeObjects(objects, ctx);
+                    }
+
+                    updateUI();
+                } catch (error) {
+                    console.error('AI loop error:', error);
+                }
+
+                requestAnimationFrame(analyzeFrame);
+            }
+
+            analyzeFrame();
+        }
+
+        function analyzeFaceLandmarks(faceLandmarks, ctx) {
+            if (!faceLandmarks.faceLandmarks || faceLandmarks.faceLandmarks.length === 0) return;
+
+            // Privacy mode check
+            if (faceLandmarks.faceLandmarks.length > 1) {
+                document.getElementById('privacyOverlay').classList.add('active');
+                return;
+            }
+            document.getElementById('privacyOverlay').classList.remove('active');
+
+            const landmarks = faceLandmarks.faceLandmarks[0];
+
+            // Posture (nose Y position)
+            if (state.features.posture) {
+                const nose = landmarks[0];
+                const chin = landmarks[152];
+                const noseY = nose.y * ctx.canvas.height;
+                const chinY = chin.y * ctx.canvas.height;
+                const postureScore = Math.max(0, 100 - Math.abs(chinY - noseY - 80) * 2);
+                document.getElementById('postureScore').textContent = Math.round(postureScore) + '%';
+                document.getElementById('postureBar').style.width = postureScore + '%';
+
+                // Voice posture feedback
+                if (postureScore < 40) {
+                    speakZen("Внимание! Осанка плохая — " + Math.round(postureScore) + " процентов. Выпрямите спину!", 'posture');
+                } else if (postureScore > 85) {
+                    speakZen("Осанка превосходная! " + Math.round(postureScore) + " процентов. Так держать!", 'posture');
+                }
+            }
+
+            // Smile detection
+            if (state.features.smileCounter) {
+                const leftMouth = landmarks[61];
+                const rightMouth = landmarks[291];
+                const upperLip = landmarks[13];
+                const lowerLip = landmarks[14];
+
+                const mouthWidth = Math.abs(rightMouth.x - leftMouth.x);
+                const mouthHeight = Math.abs(lowerLip.y - upperLip.y);
+                const mouthRatio = mouthHeight / mouthWidth;
+
+                if (mouthRatio < 0.08 && mouthRatio > 0.02) {
+                    if (now - state.lastSmileTime > 3000) {
+                        state.smileCount++;
+                        state.lastSmileTime = now;
+                        showToast('😊 Улыбка зафиксирована!');
+                        const smilePhrases = [
+                            "Отличная улыбка! Это уже " + state.smileCount + "-я!",
+                            "Вижу улыбку! Это поднимает настроение!",
+                            "Браво! Улыбка номер " + state.smileCount + "!",
+                            "Улыбаешься? Так держать! Серотонин растёт!",
+                            "Замечательная улыбка! Ты сияешь!"
+                        ];
+                        speakZen(smilePhrases[state.smileCount % smilePhrases.length], 'smile');
+                        checkAchievements();
+                    }
+                }
+            }
+
+            // Yawn detection
+            if (landmarks) {
+                const upperLip = landmarks[13];
+                const lowerLip = landmarks[14];
+                const mouthOpen = Math.abs(lowerLip.y - upperLip.y);
+
+                if (mouthOpen > 0.08) {
+                    if (now - state.lastYawnTime > 5000) {
+                        state.yawnCount++;
+                        state.lastYawnTime = now;
+                        showToast('😴 Зевок обнаружен. Может быть, пора отдохнуть?');
+                        const yawnPhrases = [
+                            "Я вижу зевок! Может, пора сделать перерыв?",
+                            "Зеваете? Встаньте и разомнитесь!",
+                            "Усталость? Попейте воды и потянитесь!",
+                            "Зевок! Попробуйте дыхательное упражнение."
+                        ];
+                        speakZen(yawnPhrases[state.yawnCount % yawnPhrases.length], 'yawn');
+                    }
+                }
+            }
+
+            // Neck stretch (head rotation)
+            if (landmarks) {
+                const nose = landmarks[0];
+                const chin = landmarks[152];
+                const leftEar = landmarks[234];
+                const rightEar = landmarks[454];
+
+                const faceWidth = Math.abs(rightEar.x - leftEar.x);
+                const noseX = nose.x;
+                const faceCenter = (rightEar.x + leftEar.x) / 2;
+
+                const headTilt = Math.abs(noseX - faceCenter) / faceWidth;
+                if (headTilt > 0.2) {
+                    if (now - state.lastStretchTime > 5000) {
+                        state.stretchCount++;
+                        state.lastStretchTime = now;
+                        showToast('🧘 Растяжка шеи обнаружена!');
+                        speakZen("Отличная разминка шеи! Это уже " + state.stretchCount + "-я!", 'stretch');
+                        checkAchievements();
+                    }
+                }
+            }
+
+            // Zen mode (face relaxation)
+            if (landmarks) {
+                const eyeRatio = Math.abs(landmarks[159].y - landmarks[145].y) / Math.abs(landmarks[133].x - landmarks[33].x);
+                if (eyeRatio < 0.15) {
+                    document.getElementById('zenOverlay').classList.add('active');
+                } else {
+                    document.getElementById('zenOverlay').classList.remove('active');
+                }
+            }
+        }
+
+        function analyzeHandLandmarks(handLandmarks, ctx) {
+            if (!handLandmarks.landmarks || handLandmarks.landmarks.length === 0) return;
+
+            const hands = handLandmarks.landmarks;
+
+            // Check advanced gestures
+            if (typeof checkAdvancedGestures === 'function') checkAdvancedGestures(hands);
+
+            hands.forEach((hand, handIndex) => {
+                // Face touch warning
+                if (hand.length > 0) {
+                    const handTip = hand[9];
+                    if (handTip.y < 0.35 && handTip.x > 0.2 && handTip.x < 0.8) {
+                        addEventLog('⚠️ Hand near face detected');
+                        speakZen("Не трогайте лицо! Это вредно для кожи.", 'facetTouch');
+                    }
+                }
+
+                // Heart gesture (thumb + index tips together)
+                if (hand.length > 8) {
+                    const thumbTip = hand[4];
+                    const indexTip = hand[8];
+                    const distance = Math.sqrt(
+                        Math.pow(thumbTip.x - indexTip.x, 2) +
+                        Math.pow(thumbTip.y - indexTip.y, 2)
+                    );
+
+                    if (distance < 0.05) {
+                        speakZen("Вижу жест сердечка! Любовь к себе — это важно!", 'heart');
+                        showToast('❤️ Жест сердца!');
+                    }
+                }
+
+                // Zen mode (two hands together)
+                if (hands.length === 2) {
+                    const hand1 = hands[0];
+                    const hand2 = hands[1];
+
+                    if (hand1.length > 9 && hand2.length > 9) {
+                        const palm1 = hand1[9];
+                        const palm2 = hand2[9];
+                        const palmDistance = Math.sqrt(
+                            Math.pow(palm1.x - palm2.x, 2) +
+                            Math.pow(palm1.y - palm2.y, 2)
+                        );
+
+                        if (palmDistance < 0.1) {
+                            document.getElementById('zenOverlay').classList.add('active');
+                            speakZen("Режим дзен активирован. Дышите глубоко. Будьте в моменте.", 'zen', true);
+                        }
+                    }
+                }
+
+                // Water drinking detection
+                if (state.features.hydration && hand.length > 0) {
+                    const handWrist = hand[0];
+                    const handMiddle = hand[9];
+
+                    if (handMiddle.y < 0.4 && handWrist.x > 0.1 && handWrist.x < 0.9) {
+                        // Hand near mouth area
+                    }
+                }
+            });
+        }
+
+        function analyzeObjects(objects, ctx) {
+            if (!objects.detections) return;
+
+            // Track detected objects for narration
+            state.lastDetectedObjects = objects.detections.map(d => d.categories[0]?.categoryName).filter(Boolean);
+
+            objects.detections.forEach((detection) => {
+                const catName = detection.categories[0]?.categoryName || '';
+                const confidence = Math.round((detection.categories[0]?.score || 0) * 100);
+                const boundingBox = detection.boundingBox;
+
+                // Draw bounding box for ALL detected objects
+                const objTranslations = {
+                    'person': 'Человек', 'bottle': 'Бутылка', 'cup': 'Чашка',
+                    'cell phone': 'Телефон', 'laptop': 'Ноутбук', 'book': 'Книга',
+                    'chair': 'Стул', 'keyboard': 'Клавиатура', 'mouse': 'Мышь',
+                    'tv': 'Монитор', 'potted plant': 'Растение', 'cat': 'Кошка',
+                    'dog': 'Собака', 'clock': 'Часы', 'vase': 'Ваза', 'scissors': 'Ножницы',
+                    'remote': 'Пульт', 'backpack': 'Рюкзак', 'handbag': 'Сумка'
+                };
+                const ruName = objTranslations[catName] || catName;
+
+                if (boundingBox) {
+                    const bx = boundingBox.originX;
+                    const by = boundingBox.originY;
+                    const bw = boundingBox.width;
+                    const bh = boundingBox.height;
+
+                    // Draw box
+                    ctx.strokeStyle = catName.includes('phone') ? '#ef4444' : '#34d399';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(bx, by, bw, bh);
+
+                    // Draw label background
+                    ctx.fillStyle = 'rgba(0,0,0,0.7)';
+                    const labelW = ctx.measureText(ruName + ' ' + confidence + '%').width + 12;
+                    ctx.fillRect(bx, by - 22, labelW, 20);
+
+                    // Draw label text
+                    ctx.font = 'bold 12px Quicksand, sans-serif';
+                    ctx.fillStyle = '#fff';
+                    ctx.fillText(ruName + ' ' + confidence + '%', bx + 4, by - 6);
+                }
+
+                // Phone detection with voice
+                if (catName.includes('cell phone') || catName.includes('phone')) {
+                    showToast('📱 Телефон обнаружен! Сосредоточьтесь.');
+                    speakZen("Вижу телефон! Уберите его, пора сосредоточиться на работе.", 'phone');
+                    addEventLog('📱 Phone detected');
+                }
+
+                // Cup/bottle detection with voice
+                if (catName.includes('cup') || catName.includes('bottle')) {
+                    speakZen("Вижу " + ruName.toLowerCase() + ". Не забудьте попить воды!", 'object');
+                }
+
+                // Book detection
+                if (catName.includes('book')) {
+                    speakZen("Вижу книгу. Отличный выбор для саморазвития!", 'object');
+                }
+
+                // Cat/dog
+                if (catName.includes('cat') || catName.includes('dog')) {
+                    speakZen("Вижу питомца! Животные снижают стресс.", 'object');
+                }
+            });
+        }
+
+        // ==================== WATER & HYDRATION ====================
+        function logWater() {
+            state.waterCount++;
+            showToast('💧 Вода зафиксирована! (' + state.waterCount + ')');
+            addEventLog('💧 Water intake logged');
+            const waterPhrases = [
+                "Вода записана! Это " + state.waterCount + "-й стакан. Ваш мозг скажет спасибо!",
+                "Отлично! Ещё один глоток здоровья. Всего: " + state.waterCount + "!",
+                "Водный баланс пополнен! " + state.waterCount + " из " + state.goals.water + " стаканов.",
+                "Супер! Гидратация на высоте! Стакан номер " + state.waterCount + "!",
+            ];
+            speakZen(waterPhrases[state.waterCount % waterPhrases.length], 'water');
+            if (state.waterCount >= state.goals.water) {
+                speakZen("Поздравляю! Цель по воде выполнена! " + state.waterCount + " стаканов!", 'water', true);
+            }
+            checkAchievements();
+            saveToLocalStorage();
+        }
+
+        // ==================== POMODORO ====================
+        function startPomodoro() {
+            if (state.pomodoroIsRunning) return;
+
+            state.pomodoroIsRunning = true;
+            document.getElementById('pomodoroStartBtn').style.display = 'none';
+            document.getElementById('pomodoroStopBtn').style.display = 'block';
+
+            state.pomodoroIntervalId = setInterval(() => {
+                state.pomodoroTimeLeft--;
+
+                if (state.pomodoroTimeLeft <= 0) {
+                    pomodoroComplete();
+                }
+
+                updatePomodoroDisplay();
+            }, 1000);
+        }
+
+        function stopPomodoro() {
+            state.pomodoroIsRunning = false;
+            clearInterval(state.pomodoroIntervalId);
+            document.getElementById('pomodoroStartBtn').style.display = 'block';
+            document.getElementById('pomodoroStopBtn').style.display = 'none';
+            updatePomodoroDisplay();
+        }
+
+        function resetPomodoro() {
+            stopPomodoro();
+            state.pomodoroSession = 'work';
+            state.pomodoroTimeLeft = 25 * 60;
+            updatePomodoroDisplay();
+        }
+
+        function pomodoroComplete() {
+            stopPomodoro();
+
+            if (state.pomodoroSession === 'work') {
+                state.pomodoroCount++;
+                state.pomodoroSession = 'break';
+                state.pomodoroTimeLeft = 5 * 60;
+                showNotification('🍅 Помидор завершен!', 'Время короткого перерыва (5 минут)');
+                showToast('🍅 Помидор завершен!');
+                speakZen("Помидор номер " + state.pomodoroCount + " завершён! Молодец! Теперь пять минут отдыха. Встаньте, потянитесь, попейте воды.", 'pomodoro', true);
+                checkAchievements();
+            } else if (state.pomodoroSession === 'break') {
+                state.pomodoroSession = 'longbreak';
+                state.pomodoroTimeLeft = 15 * 60;
+                showNotification('⏱️ Перерыв завершен!', 'Время длинного перерыва (15 минут)');
+            } else {
+                state.pomodoroSession = 'work';
+                state.pomodoroTimeLeft = 25 * 60;
+                showNotification('💪 Длинный перерыв завершен!', 'Время вернуться к работе!');
+            }
+
+            updatePomodoroDisplay();
+            saveToLocalStorage();
+        }
+
+        function updatePomodoroDisplay() {
+            const minutes = Math.floor(state.pomodoroTimeLeft / 60);
+            const seconds = state.pomodoroTimeLeft % 60;
+            document.getElementById('pomodoroTimer').textContent =
+                String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+
+            if (state.pomodoroSession === 'work') {
+                document.getElementById('pomodoroStatus').textContent = 'Работа: ' + minutes + ' минут';
+            } else if (state.pomodoroSession === 'break') {
+                document.getElementById('pomodoroStatus').textContent = 'Короткий перерыв: ' + minutes + ' минут';
+            } else {
+                document.getElementById('pomodoroStatus').textContent = 'Длинный перерыв: ' + minutes + ' минут';
+            }
+        }
+
+        // ==================== CAFFEINE ====================
+        function addCaffeine(type) {
+            let amount = 0;
+            let label = '';
+
+            if (type === 'coffee') {
+                amount = 95;
+                label = '☕ Кофе';
+            } else if (type === 'tea') {
+                amount = 30;
+                label = '🫖 Чай';
+            } else if (type === 'energy') {
+                amount = 80;
+                label = '⚡ Энергия';
+            }
+
+            state.caffeineMg += amount;
+            showToast(label + ' (+' + amount + 'mg кофеина)');
+            const caffeineMsg = state.caffeineMg > 300
+                ? label + " записан. Внимание! Уровень кофеина уже " + state.caffeineMg + " миллиграмм. Пора переходить на воду!"
+                : label + " записан. Кофеин: " + state.caffeineMg + " миллиграмм. Энергия в норме!";
+            speakZen(caffeineMsg, 'caffeine');
+            updateUI();
+            saveToLocalStorage();
+            checkAchievements();
+        }
+
+        // ==================== AMBIENT VOICE NARRATION (replaces oscillator sounds) ====================
+        let ambientVoiceInterval = null;
+        let currentAmbientType = null;
+
+        const ambientNarrations = {
+            rain: {
+                name: 'Дождь',
+                start: 'Включаю атмосферу дождя. Представьте: за окном мягко стучат капли по стеклу. Воздух свежий, пахнет мокрой землёй. Идеальная погода для концентрации.',
+                loop: [
+                    'Дождь продолжает тихо барабанить по крыше. Капли стекают по стеклу, создавая мягкий ритм.',
+                    'Где-то вдалеке раздался мягкий раскат грома. Дождь усиливается, потом снова стихает. Уютно и спокойно.',
+                    'Капли падают в лужу, создавая маленькие круги на воде. Ритм дождя убаюкивает и помогает сосредоточиться.',
+                    'Лёгкий шелест листьев под дождём. Природа наполняется влагой. Ваш ум становится яснее.',
+                    'Дождь немного стихает, превращаясь в мелкую морось. Тишина между каплями дарит покой.'
+                ]
+            },
+            forest: {
+                name: 'Лес',
+                start: 'Включаю атмосферу леса. Вы в глубине хвойного леса. Воздух наполнен ароматом сосны и мха. Где-то высоко в кронах поёт птица.',
+                loop: [
+                    'Мягкий ветерок проходит через кроны деревьев. Шелестят листья. Где-то вдалеке стучит дятел.',
+                    'Солнечный луч пробивается сквозь густую листву. Кузнечик стрекочет в высокой траве. Покой леса обнимает вас.',
+                    'Белка перепрыгнула с ветки на ветку. Хрустнула шишка под ногой. Лес живёт своей тихой жизнью.',
+                    'Птицы перекликаются высоко в кронах. Мягкий мох пружинит под ногами. Запах хвои наполняет лёгкие.',
+                    'Ручей журчит где-то недалеко. Лёгкий ветерок приносит аромат лесных цветов. Гармония природы.'
+                ]
+            },
+            ocean: {
+                name: 'Океан',
+                start: 'Включаю атмосферу океана. Вы на берегу бескрайнего моря. Волны мерно накатывают на песок и отступают. Солёный ветер освежает лицо.',
+                loop: [
+                    'Волна мягко набежала на берег и отхлынула, оставляя мокрый песок. Чайки кружат в вышине. Простор и свобода.',
+                    'Большая волна разбилась о камни, рассыпав мелкие брызги. Шипение пены на песке. Ритм океана вечен.',
+                    'Прилив медленно продвигается вперёд. Ракушки блестят на солнце. Океан дышит в своём величественном ритме.',
+                    'Дельфины мелькнули вдалеке. Горизонт сливается с небом. Бесконечность океана успокаивает ум.',
+                    'Волны становятся тише. Закатное солнце окрашивает воду в золотой цвет. Момент абсолютного покоя.'
+                ]
+            },
+            fire: {
+                name: 'Камин',
+                start: 'Включаю атмосферу камина. Вы сидите в уютном кресле у камина. Огонь потрескивает, бросая тёплые тени на стены. Тепло обнимает вас.',
+                loop: [
+                    'Полено треснуло в камине, выпустив рой искр. Пламя танцует, создавая причудливые фигуры. Тепло и уют.',
+                    'Огонь мягко гудит в камине. Тени играют на стенах. Время замедляется в этом тёплом коконе спокойствия.',
+                    'Язычки пламени облизывают берёзовое полено. Запах дыма и тепла. Идеальный момент для размышлений.',
+                    'Угольки мерцают красным и оранжевым. Жар камина согревает руки. Чувство безопасности и покоя.',
+                    'Пламя чуть стихает, потом вспыхивает с новой силой. Искры летят вверх по дымоходу. Магия живого огня.'
+                ]
+            },
+            white: {
+                name: 'Тишина',
+                start: 'Режим глубокой концентрации. Все звуки замолкают. Только ваш разум и текущая задача. Полная фокусировка. Вы в потоке.',
+                loop: [
+                    'Тишина продолжается. Ваш разум ясен. Мысли текут свободно. Вы полностью сконцентрированы на своей работе.',
+                    'Глубокий вдох. Глубокий выдох. Ничто не отвлекает. Фокус на сто процентов.',
+                    'Ваш мозг работает в режиме максимальной производительности. Тишина — лучший друг продуктивности.',
+                    'Момент полной ясности ума. Каждая мысль на своём месте. Вы в состоянии потока.',
+                    'Внутренний покой. Никаких лишних мыслей. Только вы и ваша задача. Продуктивность на максимуме.'
+                ]
+            },
+            lofi: {
+                name: 'Ло-Фай',
+                start: 'Включаю атмосферу ло-фай кафе. Вы в уютном кафе с приглушённым светом. За окном дождливый вечер. Мягкая музыка создаёт идеальный ритм для работы.',
+                loop: [
+                    'Бариста готовит кофе. Мягкое жужжание кофемашины. Аромат свежего эспрессо разносится по залу. Ритм работы найден.',
+                    'Кто-то за соседним столиком тихо печатает на клавиатуре. Мягкий свет лампы. Атмосфера творчества и продуктивности.',
+                    'Дождь за окном кафе. Тёплая чашка в руках. Мысли складываются в идеи. Ритм ло-фай помогает думать.',
+                    'Страницы книги шелестят где-то рядом. Аромат корицы и ванили. Уютная атмосфера вдохновляет на лучшую работу.',
+                    'Мягкий свет гирлянд. Тихий разговор за соседним столиком. Вы в своём идеальном рабочем пространстве.'
+                ]
+            }
+        };
+
+        function playAmbientSound(type) {
+            stopAmbientSounds();
+
+            currentAmbientType = type;
+            const narration = ambientNarrations[type];
+
+            if (!narration) return;
+
+            // Announce the atmosphere start
+            speakZen(narration.start, 'general', true);
+            showToast('🎵 ' + narration.name + ' — голосовая атмосфера');
+
+            // Start looping narrations every 45 seconds
+            let loopIndex = 0;
+            ambientVoiceInterval = setInterval(() => {
+                if (currentAmbientType !== type) return;
+
+                const phrase = narration.loop[loopIndex % narration.loop.length];
+                speakZen(phrase, 'scene');
+                loopIndex++;
+            }, 45000);
+        }
+
+        function stopAmbientSounds() {
+            if (ambientVoiceInterval) {
+                clearInterval(ambientVoiceInterval);
+                ambientVoiceInterval = null;
+            }
+            if (currentAmbientType) {
+                speakZen("Атмосфера отключена.", 'general');
+                currentAmbientType = null;
+            }
+            // Also stop any legacy oscillators
+            state.currentAmbientOscillators.forEach(osc => {
+                try { osc.stop(); } catch (e) {}
+            });
+            state.currentAmbientOscillators = [];
+        }
+
+        // ==================== MOOD TRACKING ====================
+        function logMood(mood) {
+            const timestamp = new Date();
+            state.moodLog.push({
+                mood: mood,
+                time: timestamp.toISOString(),
+                hour: timestamp.getHours()
+            });
+
+            const moodEmojis = {
+                terrible: '😢',
+                bad: '😕',
+                ok: '😐',
+                good: '🙂',
+                great: '😄',
+                amazing: '🤩',
+                zen: '😌',
+                energetic: '⚡'
+            };
+
+            showToast(moodEmojis[mood] + ' Настроение записано');
+            const moodNames = { terrible:'ужасное', bad:'плохое', ok:'нормальное', good:'хорошее', great:'отличное', amazing:'потрясающее', zen:'дзен', energetic:'энергичное' };
+            speakZen("Настроение записано: " + (moodNames[mood] || mood) + ". Спасибо что делитесь!", 'mood');
+
+            // Track in emotion timeline
+            const moodEmojis2 = { terrible: '😢', bad: '😕', ok: '😐', good: '🙂', great: '😄', amazing: '🤩', zen: '😌', energetic: '⚡' };
+            const moodColors = { terrible: '#ef4444', bad: '#f97316', ok: '#eab308', good: '#84cc16', great: '#22c55e', amazing: '#8b5cf6', zen: '#6366f1', energetic: '#f59e0b' };
+            addEmotionToTimeline(moodEmojis2[mood] || '😐', mood, moodColors[mood] || '#6b7280');
+
+            // Update button selection
+            document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('selected'));
+            if (window.event && window.event.target) window.event.target.classList.add('selected');
+
+            saveToLocalStorage();
+        }
+
+        // ==================== SNAPSHOTS ====================
+        function takeSnapshot() {
+            const video = document.getElementById('webcamVideo');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0);
+
+            const img = new Image();
+            img.src = canvas.toDataURL();
+
+            const snapshotDiv = document.createElement('div');
+            snapshotDiv.className = 'snapshot';
+            snapshotDiv.innerHTML = '<img src="' + img.src + '">';
+            snapshotDiv.title = new Date().toLocaleString();
+
+            document.getElementById('snapshotGallery').prepend(snapshotDiv);
+
+            // Keep only last 20 snapshots
+            const snapshots = document.getElementById('snapshotGallery').children;
+            for (let i = snapshots.length - 1; i >= 20; i--) {
+                snapshots[i].remove();
+            }
+
+            showToast('📸 Снимок сохранен');
+            saveToLocalStorage();
+        }
+
+        // ==================== BREATHING EXERCISE ====================
+        function resetBreathing() {
+            updateBreathingPhase();
+        }
+
+        let lastBreathPhase = -1;
+        function updateBreathingPhase() {
+            const phases = ['Вдох', 'Задержка', 'Выдох', 'Задержка'];
+            const durations = [4, 4, 4, 4];
+            const phaseIndex = Math.floor((Date.now() / 1000) % 16 / 4);
+
+            document.getElementById('breathingPhase').textContent = phases[phaseIndex];
+
+            // Voice breathing phases when modal is open
+            if (document.getElementById('breathingModal')?.classList.contains('active')) {
+                if (phaseIndex !== lastBreathPhase) {
+                    lastBreathPhase = phaseIndex;
+                    const voicePhrases = ['Вдох...', 'Задержите дыхание...', 'Выдох...', 'Задержите...'];
+                    speakZen(voicePhrases[phaseIndex], 'general', true);
+                }
+            }
+        }
+
+        setInterval(updateBreathingPhase, 1000);
+
+        // ==================== EYE BREAK ====================
+        function checkEyeBreak() {
+            if (Date.now() - state.lastEyeBreakTime > state.eyeBreakInterval) {
+                openModal('eyeBreakModal');
+                state.lastEyeBreakTime = Date.now();
+                speakZen("Время для отдыха глаз! Правило 20-20-20. Посмотрите вдаль на 6 метров в течение 20 секунд.", 'eyeBreak', true);
+
+                let countdown = 20;
+                const timer = setInterval(() => {
+                    countdown--;
+                    document.getElementById('eyeBreakCountdown').textContent = countdown;
+
+                    if (countdown <= 0) {
+                        clearInterval(timer);
+                    }
+                }, 1000);
+            }
+        }
+
+        function eyeBreakComplete() {
+            closeModal('eyeBreakModal');
+            state.lastEyeBreakTime = Date.now();
+            showToast('👁️ Спасибо за заботу о глазах!');
+            showNotification('👁️ Спасибо!', 'Ваши глаза получили нужный отдых');
+        }
+
+        setInterval(checkEyeBreak, 60000);
+
+        // ==================== STAND UP REMINDER ====================
+        let standUpReminderTime = 0;
+
+        function checkStandUpReminder() {
+            const sessionTime = (Date.now() - state.sessionStartTime) / 1000 / 60;
+
+            if (sessionTime > 0 && Math.floor(sessionTime / 45) > standUpReminderTime) {
+                standUpReminderTime = Math.floor(sessionTime / 45);
+                showNotification('🧍 Время встать!', 'Вы сидели ' + Math.floor(sessionTime) + ' минут. Встаньте и потянитесь!');
+                showToast('🧍 Встаньте и потянитесь!');
+                speakZen("Вы сидите уже " + Math.floor(sessionTime) + " минут! Пора встать и размяться. Сделайте пять приседаний!", 'general', true);
+            }
+        }
+
+        setInterval(checkStandUpReminder, 60000);
+
+        // ==================== ACHIEVEMENTS ====================
+        function initializeAchievements() {
+            state.achievements = {
+                firstDrink: { name: 'Первый Глоток', icon: '💧', unlocked: false, requirement: () => state.waterCount >= 1 },
+                hydra: { name: 'Гидра', icon: '🌊', unlocked: false, requirement: () => state.waterCount >= 10 },
+                ocean: { name: 'Океан', icon: '🏖️', unlocked: false, requirement: () => state.waterCount >= 20 },
+                smiley: { name: 'Улыбчивый', icon: '😊', unlocked: false, requirement: () => state.smileCount >= 5 },
+                joyful: { name: 'Радость', icon: '😄', unlocked: false, requirement: () => state.smileCount >= 20 },
+                flexible: { name: 'Гибкий', icon: '🧘', unlocked: false, requirement: () => state.stretchCount >= 5 },
+                strongman: { name: 'Качок', icon: '💪', unlocked: false, requirement: () => state.squatCount >= 10 },
+                marathoner: { name: 'Марафонец', icon: '🏃', unlocked: false, requirement: () => state.squatCount >= 50 },
+                pomodoro1: { name: 'Помидор', icon: '🍅', unlocked: false, requirement: () => state.pomodoroCount >= 1 },
+                productive: { name: 'Продуктивный', icon: '⚙️', unlocked: false, requirement: () => state.pomodoroCount >= 4 },
+                zenMaster: { name: 'Дзен Мастер', icon: '☮️', unlocked: false, requirement: () => true },
+                streak3: { name: 'Стрик 3', icon: '🔥', unlocked: false, requirement: () => state.streak >= 3 },
+                streak7: { name: 'Стрик 7', icon: '🔥🔥', unlocked: false, requirement: () => state.streak >= 7 },
+                streak30: { name: 'Стрик 30', icon: '👑', unlocked: false, requirement: () => state.streak >= 30 },
+                social: { name: 'Социальный', icon: '🤝', unlocked: false, requirement: () => state.moodLog.length >= 1 },
+                coffeeAddict: { name: 'Кофеман', icon: '☕', unlocked: false, requirement: () => state.caffeineMg >= 285 },
+                noCaffeine: { name: 'Ноль Кофеина', icon: '✨', unlocked: false, requirement: () => state.caffeineMg === 0 },
+                focus1h: { name: 'Фокус 1ч', icon: '🎯', unlocked: false, requirement: () => (Date.now() - state.sessionStartTime) >= 3600000 }
+            };
+
+            renderAchievements();
+        }
+
+        function checkAchievements() {
+            Object.keys(state.achievements).forEach(key => {
+                const achievement = state.achievements[key];
+                if (!achievement.unlocked && achievement.requirement()) {
+                    achievement.unlocked = true;
+                    showToast('🏆 Достижение разблокировано: ' + achievement.name);
+                    showNotification('🏆 Новое достижение!', achievement.name);
+                    addEventLog('🏆 Achievement unlocked: ' + achievement.name);
+                    speakZen("Поздравляю! Новое достижение разблокировано: " + achievement.name + "! Вы великолепны!", 'general', true);
+                    renderAchievements();
+                    saveToLocalStorage();
+                }
+            });
+        }
+
+        function renderAchievements() {
+            const grid = document.getElementById('achievementGrid');
+            grid.innerHTML = '';
+
+            Object.keys(state.achievements).forEach(key => {
+                const achievement = state.achievements[key];
+                const badge = document.createElement('div');
+                badge.className = 'achievement-badge' + (achievement.unlocked ? ' unlocked' : ' locked');
+                badge.innerHTML = `
+                    <div class="achievement-icon">${achievement.icon}</div>
+                    <div class="achievement-name">${achievement.name}</div>
+                    <div class="achievement-tooltip">${achievement.name}</div>
+                `;
+                grid.appendChild(badge);
+            });
+        }
+
+        // ==================== WEATHER ====================
+        async function loadWeather() {
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject);
+                });
+
+                const { latitude, longitude } = position.coords;
+
+                const response = await fetch(
+                    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,relative_humidity_2m&timezone=auto`
+                );
+                const data = await response.json();
+                const current = data.current;
+
+                document.getElementById('weatherIcon').textContent = getWeatherIcon(current.weather_code);
+                document.getElementById('weatherTemp').textContent = Math.round(current.temperature_2m) + '°C';
+                document.getElementById('weatherDesc').textContent = getWeatherDescription(current.weather_code);
+                document.getElementById('weatherWidget').style.display = 'flex';
+            } catch (error) {
+                console.log('Could not load weather:', error);
+            }
+        }
+
+        function getWeatherIcon(code) {
+            if (code === 0) return '☀️';
+            if (code === 1 || code === 2) return '⛅';
+            if (code === 3) return '☁️';
+            if (code === 45 || code === 48) return '🌫️';
+            if (code >= 51 && code <= 67) return '🌧️';
+            if (code >= 71 && code <= 85) return '🌨️';
+            if (code === 80 || code === 81) return '🌧️';
+            if (code >= 80 && code <= 82) return '⛈️';
+            return '🌤️';
+        }
+
+        function getWeatherDescription(code) {
+            const descriptions = {
+                0: 'Ясно',
+                1: 'Облачно',
+                3: 'Облачно',
+                45: 'Туман',
+                51: 'Морось',
+                61: 'Дождь',
+                71: 'Снег',
+                80: 'Дождь',
+                95: 'Гроза'
+            };
+            return descriptions[code] || 'Неизвестно';
+        }
+
+        // ==================== CHAT ====================
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            // Add user message to chat
+            addChatMessage('user', message);
+            input.value = '';
+
+            // Get AI response
+            try {
+                const apiKey = document.getElementById('geminiApiKey')?.value || '';
+                if (!apiKey) {
+                    const offlineWisdom = [
+                        "Каждый вдох — это начало. Каждый выдох — отпускание.",
+                        "Фокус — это мышца. Тренируйте её каждый день.",
+                        "Вода — источник ясности ума. Выпейте сейчас.",
+                        "Улыбка меняет химию мозга за секунды.",
+                        "Встаньте и потянитесь. Тело скажет вам спасибо.",
+                        "Одно приседание лучше, чем ни одного.",
+                        "Настоящий момент — единственный, который существует."
+                    ];
+                    const wisdom = offlineWisdom[Math.floor(Math.random() * offlineWisdom.length)];
+                    addChatMessage('assistant', '🌸 ' + wisdom);
+                    speakZen(wisdom, 'general');
+                    return;
+                }
+
+                const response = await fetch(
+                    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey,
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{
+                                    text: 'You are a wellness coach. Answer in Russian: ' + message
+                                }]
+                            }]
+                        })
+                    }
+                );
+
+                const data = await response.json();
+                const aiMessage = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Извините, я не смог ответить.';
+                addChatMessage('assistant', aiMessage);
+                speakZen(aiMessage, 'general', true);
+            } catch (error) {
+                console.error('Chat error:', error);
+                addChatMessage('assistant', 'Произошла ошибка при получении ответа.');
+            }
+        }
+
+        function addChatMessage(role, text) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'p-3 rounded-lg text-sm ' + (role === 'user' ? 'bg-blue-100 ml-4' : 'bg-purple-100 mr-4');
+            msgDiv.textContent = text;
+            messagesDiv.appendChild(msgDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // ==================== HEALTH SCORE & STRESS ====================
+        function calculateHealthScore() {
+            let score = 100;
+            const sessionMins = (Date.now() - state.sessionStartTime) / 60000;
+
+            // Water factor
+            const waterTarget = Math.min(sessionMins / 30, state.goals.water);
+            if (state.waterCount < waterTarget) score -= Math.min(15, (waterTarget - state.waterCount) * 5);
+
+            // Posture factor
+            const postureEl = document.getElementById('postureScore');
+            if (postureEl && postureEl.textContent !== '--') {
+                const posture = parseInt(postureEl.textContent);
+                if (posture < 50) score -= 15;
+                else if (posture < 70) score -= 5;
+            }
+
+            // Activity factor
+            if (sessionMins > 30 && state.stretchCount === 0) score -= 10;
+            if (sessionMins > 60 && state.squatCount === 0) score -= 5;
+
+            // Smile factor (positive)
+            score += Math.min(10, state.smileCount * 2);
+
+            // Caffeine penalty
+            if (state.caffeineMg > 400) score -= 10;
+
+            // Mood bonus
+            const lastMood = state.moodLog[state.moodLog.length - 1];
+            if (lastMood) {
+                const moodScores = { terrible: -10, bad: -5, ok: 0, good: 5, great: 8, amazing: 10, zen: 10, energetic: 8 };
+                score += (moodScores[lastMood.mood] || 0);
+            }
+
+            score = Math.max(0, Math.min(100, Math.round(score)));
+            state.healthScore = score;
+            updateHealthScoreUI(score);
+            return score;
+        }
+
+        function updateHealthScoreUI(score) {
+            const ring = document.getElementById('healthScoreRing');
+            const value = document.getElementById('healthScoreValue');
+            const trend = document.getElementById('healthTrend');
+
+            if (!ring || !value) return;
+
+            value.textContent = score;
+
+            let color = '#10b981';
+            let trendText = 'ОТЛИЧНО';
+            let trendClass = 'bg-green-100 text-green-700';
+
+            if (score < 40) {
+                color = '#ef4444';
+                trendText = 'ВНИМАНИЕ';
+                trendClass = 'bg-red-100 text-red-700';
+            } else if (score < 60) {
+                color = '#f59e0b';
+                trendText = 'СРЕДНЕ';
+                trendClass = 'bg-amber-100 text-amber-700';
+            } else if (score < 80) {
+                color = '#3b82f6';
+                trendText = 'ХОРОШО';
+                trendClass = 'bg-blue-100 text-blue-700';
+            }
+
+            ring.style.background = `conic-gradient(${color} 0%, ${color} ${score}%, #e5e7eb ${score}%)`;
+            value.style.color = color;
+
+            if (trend) {
+                trend.textContent = trendText;
+                trend.className = `text-xs px-2 py-1 rounded-full font-bold ${trendClass}`;
+            }
+        }
+
+        function calculateStressLevel() {
+            let stress = 0;
+            const sessionMins = (Date.now() - state.sessionStartTime) / 60000;
+
+            // Yawn factor
+            stress += Math.min(30, state.yawnCount * 8);
+
+            // Phone usage
+            if (state.lastDetectedObjects && state.lastDetectedObjects.includes('cell phone')) stress += 15;
+
+            // Posture factor
+            const postureEl = document.getElementById('postureScore');
+            if (postureEl && postureEl.textContent !== '--') {
+                const posture = parseInt(postureEl.textContent);
+                if (posture < 40) stress += 20;
+                else if (posture < 60) stress += 10;
+            }
+
+            // Long session factor
+            if (sessionMins > 60) stress += 10;
+            if (sessionMins > 120) stress += 15;
+
+            // Smile reduces stress
+            stress -= Math.min(20, state.smileCount * 3);
+
+            // Caffeine adds stress
+            stress += Math.min(15, state.caffeineMg / 30);
+
+            stress = Math.max(0, Math.min(100, Math.round(stress)));
+            state.stressLevel = stress;
+            updateStressUI(stress);
+            return stress;
+        }
+
+        function updateStressUI(stress) {
+            const bar = document.getElementById('stressBar');
+            const label = document.getElementById('stressValue');
+
+            if (!bar || !label) return;
+
+            let color = '#10b981';
+            let text = 'Низкий';
+
+            if (stress > 70) { color = '#ef4444'; text = 'Высокий'; }
+            else if (stress > 40) { color = '#f59e0b'; text = 'Средний'; }
+
+            bar.style.background = `linear-gradient(90deg, ${color}, ${color} ${stress}%, #e5e7eb ${stress}%)`;
+            label.textContent = text;
+            label.style.color = color;
+
+            if (stress > 70) {
+                speakZen("Уровень стресса повышен. Рекомендую сделать дыхательное упражнение или выпить воды.", 'general');
+            }
+        }
+
+        // Update health metrics every 15 seconds
+        setInterval(() => {
+            calculateHealthScore();
+            calculateStressLevel();
+        }, 15000);
+
+        // ==================== EMOTION TIMELINE ====================
+        function addEmotionToTimeline(emoji, label, color) {
+            state.emotionTimeline.push({
+                emoji: emoji,
+                label: label,
+                color: color,
+                time: Date.now()
+            });
+            updateEmotionTimelineUI();
+        }
+
+        function updateEmotionTimelineUI() {
+            const container = document.getElementById('emotionTimeline');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            const recent = state.emotionTimeline.slice(-30);
+            recent.forEach(e => {
+                const dot = document.createElement('span');
+                dot.className = 'emotion-dot';
+                dot.style.background = e.color;
+                dot.title = `${e.emoji} ${e.label} - ${new Date(e.time).toLocaleTimeString()}`;
+                container.appendChild(dot);
+            });
+        }
+
+        // Auto-track emotions from detected events
+        function trackAutoEmotion() {
+            const postureEl = document.getElementById('postureScore');
+            if (postureEl && postureEl.textContent !== '--') {
+                const posture = parseInt(postureEl.textContent);
+                if (posture > 80) addEmotionToTimeline('💪', 'Хорошая осанка', '#10b981');
+                else if (posture < 40) addEmotionToTimeline('😟', 'Плохая осанка', '#ef4444');
+            }
+        }
+        setInterval(trackAutoEmotion, 60000);
+
+        // ==================== DAILY CHALLENGES ====================
+        function generateDailyChallenges() {
+            const apiKey = document.getElementById('geminiApiKey')?.value || '';
+
+            if (apiKey) {
+                generateAIChallenges(apiKey);
+            } else {
+                generateOfflineChallenges();
+            }
+        }
+
+        function generateOfflineChallenges() {
+            const allChallenges = [
+                { icon: '💧', text: 'Выпить 8 стаканов воды', target: 'water', goal: 8 },
+                { icon: '😊', text: 'Улыбнуться 15 раз', target: 'smile', goal: 15 },
+                { icon: '🧘', text: 'Сделать 3 растяжки', target: 'stretch', goal: 3 },
+                { icon: '🏋️', text: 'Выполнить 20 приседаний', target: 'squat', goal: 20 },
+                { icon: '🍅', text: 'Завершить 4 помидора', target: 'pomodoro', goal: 4 },
+                { icon: '💨', text: 'Сделать дыхательное упражнение', target: 'breathing', goal: 1 },
+                { icon: '📸', text: 'Сделать 3 снимка момента', target: 'snapshot', goal: 3 },
+                { icon: '🧠', text: 'Поддерживать осанку >70% в течение 30 мин', target: 'posture', goal: 70 },
+                { icon: '☕', text: 'Не превышать 200мг кофеина', target: 'caffeine_limit', goal: 200 },
+                { icon: '🌿', text: 'Вырастить сад до дерева', target: 'garden', goal: 30 },
+                { icon: '😌', text: 'Активировать Дзен-режим жестом', target: 'zen', goal: 1 },
+                { icon: '❤️', text: 'Показать жест сердца 5 раз', target: 'heart', goal: 5 },
+            ];
+
+            // Pick 4 random challenges
+            const shuffled = allChallenges.sort(() => Math.random() - 0.5);
+            state.dailyChallenges = shuffled.slice(0, 4);
+            state.challengeCompleted = {};
+            updateChallengesUI();
+            speakZen("Новые вызовы дня готовы! Посмотрите что вам предстоит.", 'general');
+        }
+
+        async function generateAIChallenges(apiKey) {
+            try {
+                const sessionMins = Math.round((Date.now() - state.sessionStartTime) / 60000);
+                const prompt = `Ты — AI-тренер здоровья ZenFlow. Сгенерируй 4 конкретных, выполнимых вызова на день для пользователя.
+Статистика: вода ${state.waterCount}, улыбки ${state.smileCount}, растяжки ${state.stretchCount}, приседания ${state.squatCount}, помидоры ${state.pomodoroCount}, кофеин ${state.caffeineMg}мг, время сессии ${sessionMins} мин.
+Ответь СТРОГО в JSON формате: [{"icon":"emoji","text":"описание"},{"icon":"emoji","text":"описание"},{"icon":"emoji","text":"описание"},{"icon":"emoji","text":"описание"}]
+Только JSON, без пояснений.`;
+
+                const res = await fetch(
+                    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey,
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                    }
+                );
+
+                if (res.ok) {
+                    const data = await res.json();
+                    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                    const jsonMatch = text.match(/\[[\s\S]*\]/);
+                    if (jsonMatch) {
+                        const challenges = JSON.parse(jsonMatch[0]);
+                        state.dailyChallenges = challenges.slice(0, 4);
+                        state.challengeCompleted = {};
+                        updateChallengesUI();
+                        speakZen("AI сгенерировал персональные вызовы дня! Посмотрите их в панели слева.", 'general');
+                        return;
+                    }
+                }
+                generateOfflineChallenges();
+            } catch(e) {
+                console.error('AI challenges error:', e);
+                generateOfflineChallenges();
+            }
+        }
+
+        function updateChallengesUI() {
+            const container = document.getElementById('challengesList');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            state.dailyChallenges.forEach((ch, i) => {
+                const done = state.challengeCompleted[i];
+                const card = document.createElement('div');
+                card.className = 'challenge-card' + (done ? ' completed' : '');
+                card.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">${done ? '✅' : (ch.icon || '🎯')}</span>
+                        <span class="text-sm ${done ? 'line-through text-gray-400' : 'font-semibold'}">${ch.text}</span>
+                    </div>
+                `;
+                card.onclick = () => {
+                    if (!done) {
+                        state.challengeCompleted[i] = true;
+                        updateChallengesUI();
+                        speakZen("Вызов выполнен! " + ch.text + ". Отличная работа!", 'general');
+                        checkAchievements();
+                    }
+                };
+                container.appendChild(card);
+            });
+        }
+
+        // Generate challenges on first load
+        setTimeout(generateOfflineChallenges, 3000);
+
+        // ==================== VOICE COMMANDS ====================
+        function toggleVoiceCommands() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                showToast('⚠️ Голосовые команды не поддерживаются в этом браузере');
+                speakZen("К сожалению, голосовое управление не поддерживается вашим браузером.", 'general');
+                return;
+            }
+
+            state.voiceRecognitionActive = !state.voiceRecognitionActive;
+
+            const btn = document.getElementById('voiceCmdBtn');
+            const panel = document.getElementById('voiceCmdPanel');
+
+            if (state.voiceRecognitionActive) {
+                startVoiceRecognition();
+                btn.classList.add('active');
+                panel.style.display = 'block';
+                showToast('🎤 Голосовое управление включено');
+                speakZen("Голосовое управление активировано! Скажите команду: вода, помидор, дыхание, отчёт, стоп.", 'general', true);
+            } else {
+                stopVoiceRecognition();
+                btn.classList.remove('active');
+                panel.style.display = 'none';
+                showToast('🎤 Голосовое управление выключено');
+            }
+        }
+
+        function startVoiceRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            state.speechRecognition = new SpeechRecognition();
+            state.speechRecognition.lang = 'ru-RU';
+            state.speechRecognition.continuous = true;
+            state.speechRecognition.interimResults = false;
+
+            state.speechRecognition.onresult = (event) => {
+                const last = event.results[event.results.length - 1];
+                if (last.isFinal) {
+                    const command = last[0].transcript.toLowerCase().trim();
+                    processVoiceCommand(command);
+                }
+            };
+
+            state.speechRecognition.onerror = (event) => {
+                console.warn('Speech recognition error:', event.error);
+                if (event.error === 'no-speech' && state.voiceRecognitionActive) {
+                    state.speechRecognition.start();
+                }
+            };
+
+            state.speechRecognition.onend = () => {
+                if (state.voiceRecognitionActive) {
+                    try { state.speechRecognition.start(); } catch(e) {}
+                }
+            };
+
+            state.speechRecognition.start();
+        }
+
+        function stopVoiceRecognition() {
+            if (state.speechRecognition) {
+                state.voiceRecognitionActive = false;
+                state.speechRecognition.stop();
+                state.speechRecognition = null;
+            }
+        }
+
+        function processVoiceCommand(command) {
+            const cmdText = document.getElementById('voiceCmdText');
+            if (cmdText) cmdText.textContent = '🗣️ "' + command + '"';
+
+            addEventLog('🎤 Голос: ' + command);
+
+            if (command.includes('вода') || command.includes('воду') || command.includes('пить')) {
+                logWater();
+                speakZen("Записала стакан воды по голосовой команде!", 'water');
+            } else if (command.includes('помидор') || command.includes('таймер') || command.includes('фокус')) {
+                if (state.pomodoroIsRunning) {
+                    stopPomodoro();
+                    speakZen("Помидор остановлен по голосовой команде.", 'pomodoro');
+                } else {
+                    startPomodoro();
+                    speakZen("Помидор запущен по голосовой команде! 25 минут фокуса.", 'pomodoro');
+                }
+            } else if (command.includes('дыхание') || command.includes('дышать') || command.includes('вдох')) {
+                openModal('breathingModal');
+                speakZen("Открываю дыхательное упражнение.", 'general');
+            } else if (command.includes('отчёт') || command.includes('отчет') || command.includes('статистика')) {
+                generateAIReport();
+                speakZen("Генерирую AI отчёт сессии.", 'general');
+            } else if (command.includes('стоп') || command.includes('хватит') || command.includes('выключи')) {
+                toggleVoiceCommands();
+            } else if (command.includes('кофе')) {
+                addCaffeine('coffee');
+                speakZen("Записала кофе по голосовой команде.", 'caffeine');
+            } else if (command.includes('чай')) {
+                addCaffeine('tea');
+                speakZen("Записала чай по голосовой команде.", 'caffeine');
+            } else if (command.includes('снимок') || command.includes('фото')) {
+                takeSnapshot();
+                speakZen("Снимок сделан!", 'general');
+            } else if (command.includes('музык') || command.includes('звук') || command.includes('дождь')) {
+                playAmbientSound('rain');
+                speakZen("Включаю звуки дождя для расслабления.", 'general');
+            } else if (command.includes('совет') || command.includes('инсайт') || command.includes('подскажи')) {
+                requestAIInsight();
+            } else if (command.includes('вызов') || command.includes('задани')) {
+                generateDailyChallenges();
+            } else {
+                speakZen("Команда не распознана: " + command + ". Попробуйте: вода, помидор, дыхание, отчёт.", 'general');
+            }
+        }
+
+        // ==================== AI SMART INSIGHTS ====================
+        async function requestAIInsight() {
+            const panel = document.getElementById('aiInsightsPanel');
+            const content = document.getElementById('aiInsightsContent');
+
+            if (panel) panel.style.display = 'block';
+            if (content) content.innerHTML = '<p class="text-sm text-gray-500 animate-pulse">🧠 Анализирую вашу сессию...</p>';
+
+            const apiKey = document.getElementById('geminiApiKey')?.value || '';
+            const sessionMins = Math.round((Date.now() - state.sessionStartTime) / 60000);
+
+            if (!apiKey) {
+                const offlineInsights = generateOfflineInsights(sessionMins);
+                if (content) content.innerHTML = offlineInsights.map(i => `<div class="insight-card">${i}</div>`).join('');
+                speakZen(offlineInsights[0], 'general');
+                return;
+            }
+
+            try {
+                const prompt = `Ты AI-коуч ZenFlow. Проанализируй сессию и дай 3 персональных инсайта (каждый 1-2 предложения, по-русски):
+Данные: Время сессии: ${sessionMins} мин, Вода: ${state.waterCount}/${state.goals.water}, Улыбки: ${state.smileCount}, Растяжки: ${state.stretchCount}, Приседания: ${state.squatCount}, Помидоры: ${state.pomodoroCount}, Кофеин: ${state.caffeineMg}мг, Зевки: ${state.yawnCount}, Здоровье: ${state.healthScore}/100, Стресс: ${state.stressLevel}/100.
+Ответь в формате: Инсайт 1: ...\nИнсайт 2: ...\nИнсайт 3: ...`;
+
+                const res = await fetch(
+                    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey,
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                    }
+                );
+
+                if (res.ok) {
+                    const data = await res.json();
+                    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                    const insights = text.split('\n').filter(l => l.trim().length > 10).slice(0, 3);
+
+                    if (content) content.innerHTML = insights.map(i => `<div class="insight-card">${i}</div>`).join('');
+                    if (insights[0]) speakZen(insights[0].replace(/^Инсайт \d+:\s*/, ''), 'general', true);
+
+                    state.insightHistory.push({ time: Date.now(), insights: insights });
+                } else {
+                    throw new Error('API error');
+                }
+            } catch(e) {
+                const offlineInsights = generateOfflineInsights(sessionMins);
+                if (content) content.innerHTML = offlineInsights.map(i => `<div class="insight-card">${i}</div>`).join('');
+                speakZen(offlineInsights[0], 'general');
+            }
+        }
+
+        function generateOfflineInsights(sessionMins) {
+            const insights = [];
+
+            if (state.waterCount < state.goals.water / 2 && sessionMins > 30) {
+                insights.push("💧 Вы пьёте недостаточно воды. За " + sessionMins + " минут рекомендуется выпить хотя бы " + Math.ceil(sessionMins / 30) + " стаканов.");
+            }
+            if (state.yawnCount > 3) {
+                insights.push("😴 Частые зевки (" + state.yawnCount + ") указывают на усталость. Сделайте перерыв или прогулку на свежем воздухе.");
+            }
+            if (state.smileCount > 5) {
+                insights.push("😊 Отличное настроение! " + state.smileCount + " улыбок за сессию — это повышает продуктивность на 12%.");
+            }
+            if (state.caffeineMg > 200) {
+                insights.push("☕ Кофеин уже " + state.caffeineMg + "мг. После 300мг эффективность снижается, а тревожность растёт.");
+            }
+            if (state.stretchCount === 0 && sessionMins > 30) {
+                insights.push("🧘 Вы не делали растяжку " + sessionMins + " минут. Даже 30 секунд растяжки шеи улучшит кровообращение.");
+            }
+            if (sessionMins > 90) {
+                insights.push("⏰ Длинная сессия (" + sessionMins + " мин). Правило 90 минут: после полутора часов мозгу нужен 15-минутный отдых.");
+            }
+
+            if (insights.length === 0) {
+                insights.push("✨ Вы на правильном пути! Продолжайте следить за здоровьем. Текущий рейтинг: " + state.healthScore + "/100.");
+            }
+
+            return insights.slice(0, 3);
+        }
+
+        // Auto-generate insights every 5 minutes
+        setInterval(() => {
+            const now = Date.now();
+            if (now - state.lastInsightTime > 300000) {
+                state.lastInsightTime = now;
+                requestAIInsight();
+            }
+        }, 60000);
+
+        // ==================== AI SESSION REPORT ====================
+        async function generateAIReport() {
+            const panel = document.getElementById('aiReportPanel');
+            const content = document.getElementById('aiReportContent');
+
+            if (panel) panel.style.display = 'block';
+            if (content) content.innerHTML = '<p class="animate-pulse">📊 Генерация AI отчёта...</p>';
+
+            speakZen("Генерирую подробный отчёт о вашей сессии.", 'general');
+
+            const apiKey = document.getElementById('geminiApiKey')?.value || '';
+            const sessionMins = Math.round((Date.now() - state.sessionStartTime) / 60000);
+            const hours = Math.floor(sessionMins / 60);
+            const mins = sessionMins % 60;
+            const timeStr = hours > 0 ? hours + 'ч ' + mins + 'мин' : mins + 'мин';
+
+            if (!apiKey) {
+                const report = generateOfflineReport(sessionMins, timeStr);
+                if (content) content.innerHTML = report;
+                return;
+            }
+
+            try {
+                const prompt = `Ты — AI-аналитик здоровья ZenFlow. Создай подробный отчёт сессии по-русски. Используй эмодзи.
+
+Данные сессии:
+- Длительность: ${timeStr}
+- Вода: ${state.waterCount} из ${state.goals.water} стаканов
+- Улыбки: ${state.smileCount} из ${state.goals.smiles}
+- Растяжки: ${state.stretchCount} из ${state.goals.stretches}
+- Приседания: ${state.squatCount} из ${state.goals.squats}
+- Помидоры: ${state.pomodoroCount}
+- Кофеин: ${state.caffeineMg}мг
+- Зевки: ${state.yawnCount}
+- Индекс здоровья: ${state.healthScore}/100
+- Уровень стресса: ${state.stressLevel}/100
+- Настроения: ${state.moodLog.map(m => m.mood).join(', ') || 'не указано'}
+
+Создай отчёт с разделами:
+1. Общая оценка (1 предложение + оценка из 10)
+2. Достижения (что хорошо)
+3. Зоны роста (что улучшить)
+4. Рекомендации на завтра (3 конкретных совета)
+
+Формат: HTML с тегами <b>, <br>, <span>. Коротко и по делу.`;
+
+                const res = await fetch(
+                    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey,
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                    }
+                );
+
+                if (res.ok) {
+                    const data = await res.json();
+                    let report = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                    report = report.replace(/```html?/g, '').replace(/```/g, '');
+                    if (content) content.innerHTML = report;
+
+                    const plainText = report.replace(/<[^>]*>/g, ' ').substring(0, 200);
+                    speakZen("Отчёт готов! " + plainText, 'general', true);
+                } else {
+                    throw new Error('API error');
+                }
+            } catch(e) {
+                const report = generateOfflineReport(sessionMins, timeStr);
+                if (content) content.innerHTML = report;
+            }
+        }
+
+        function generateOfflineReport(sessionMins, timeStr) {
+            const waterPct = Math.round((state.waterCount / state.goals.water) * 100);
+            const smilePct = Math.round((state.smileCount / state.goals.smiles) * 100);
+
+            let grade = 'A';
+            if (state.healthScore < 40) grade = 'D';
+            else if (state.healthScore < 60) grade = 'C';
+            else if (state.healthScore < 80) grade = 'B';
+
+            return `
+                <div style="margin-bottom:12px">
+                    <b style="font-size:16px">📊 Отчёт ZenFlow</b><br>
+                    <span style="color:#6b7280">Длительность: ${timeStr} | Оценка: <b style="color:#667eea">${grade}</b></span>
+                </div>
+                <div style="margin-bottom:8px">
+                    <b>📈 Статистика:</b><br>
+                    💧 Вода: ${state.waterCount}/${state.goals.water} (${waterPct}%)<br>
+                    😊 Улыбки: ${state.smileCount}/${state.goals.smiles} (${smilePct}%)<br>
+                    🧘 Растяжки: ${state.stretchCount}/${state.goals.stretches}<br>
+                    🏋️ Приседания: ${state.squatCount}/${state.goals.squats}<br>
+                    🍅 Помидоры: ${state.pomodoroCount}<br>
+                    ☕ Кофеин: ${state.caffeineMg}мг
+                </div>
+                <div style="margin-bottom:8px">
+                    <b>💚 Здоровье: ${state.healthScore}/100</b> | Стресс: ${state.stressLevel}/100
+                </div>
+                <div>
+                    <b>💡 Рекомендации:</b><br>
+                    ${state.waterCount < state.goals.water ? '• Пейте больше воды<br>' : ''}
+                    ${state.stretchCount < 3 ? '• Делайте растяжку каждые 30 минут<br>' : ''}
+                    ${state.caffeineMg > 300 ? '• Снизьте потребление кофеина<br>' : ''}
+                    ${sessionMins > 90 ? '• Делайте перерывы каждые 90 минут<br>' : ''}
+                    • Продолжайте использовать ZenFlow каждый день!
+                </div>
+            `;
+        }
+
+        // ==================== ENHANCED GESTURE CONTROLS ====================
+        // Patch: extend analyzeHandLandmarks with new gestures
+        const _originalAnalyzeHand = typeof analyzeHandLandmarks === 'function' ? analyzeHandLandmarks : null;
+
+        function detectThumbsUp(hand) {
+            if (hand.length < 21) return false;
+            const thumbTip = hand[4];
+            const thumbIP = hand[3];
+            const indexTip = hand[8];
+            const middleTip = hand[12];
+            const ringTip = hand[16];
+            const pinkyTip = hand[20];
+            const wrist = hand[0];
+
+            // Thumb points up, other fingers curled
+            const thumbUp = thumbTip.y < thumbIP.y && thumbTip.y < wrist.y - 0.1;
+            const fingersCurled = indexTip.y > hand[6].y && middleTip.y > hand[10].y;
+
+            return thumbUp && fingersCurled;
+        }
+
+        function detectPeaceSign(hand) {
+            if (hand.length < 21) return false;
+            const indexTip = hand[8];
+            const indexPIP = hand[6];
+            const middleTip = hand[12];
+            const middlePIP = hand[10];
+            const ringTip = hand[16];
+            const ringPIP = hand[14];
+            const pinkyTip = hand[20];
+            const pinkyPIP = hand[18];
+
+            // Index and middle extended, ring and pinky curled
+            const indexUp = indexTip.y < indexPIP.y;
+            const middleUp = middleTip.y < middlePIP.y;
+            const ringDown = ringTip.y > ringPIP.y;
+            const pinkyDown = pinkyTip.y > pinkyPIP.y;
+
+            return indexUp && middleUp && ringDown && pinkyDown;
+        }
+
+        function detectFist(hand) {
+            if (hand.length < 21) return false;
+            const tips = [hand[8], hand[12], hand[16], hand[20]];
+            const pips = [hand[6], hand[10], hand[14], hand[18]];
+
+            return tips.every((tip, i) => tip.y > pips[i].y);
+        }
+
+        function detectOpenPalm(hand) {
+            if (hand.length < 21) return false;
+            const tips = [hand[4], hand[8], hand[12], hand[16], hand[20]];
+            const pips = [hand[3], hand[6], hand[10], hand[14], hand[18]];
+
+            const allExtended = tips.every((tip, i) => {
+                if (i === 0) return tip.x < pips[i].x || tip.x > pips[i].x; // thumb
+                return tip.y < pips[i].y;
+            });
+
+            return allExtended;
+        }
+
+        // Enhanced gesture processing runs inside the AI loop via event
+        let lastGestureCheck = 0;
+        const GESTURE_COOLDOWN = 5000;
+
+        function checkAdvancedGestures(hands) {
+            const now = Date.now();
+            if (now - lastGestureCheck < GESTURE_COOLDOWN) return;
+
+            hands.forEach(hand => {
+                if (detectThumbsUp(hand)) {
+                    lastGestureCheck = now;
+                    speakZen("Класс! Палец вверх! Вы на позитиве! Так держать!", 'heart');
+                    showToast('👍 Супер!');
+                    addEmotionToTimeline('👍', 'Палец вверх', '#10b981');
+                    addEventLog('👍 Жест: палец вверх');
+                } else if (detectPeaceSign(hand)) {
+                    lastGestureCheck = now;
+                    speakZen("Мир и любовь! Жест V — знак победы!", 'heart');
+                    showToast('✌️ Победа!');
+                    addEmotionToTimeline('✌️', 'Знак мира', '#3b82f6');
+                    addEventLog('✌️ Жест: знак мира');
+                } else if (detectFist(hand)) {
+                    lastGestureCheck = now;
+                    speakZen("Кулак силы! Вы полны решимости! Вперёд к целям!", 'heart');
+                    showToast('✊ Сила!');
+                    addEmotionToTimeline('✊', 'Кулак', '#f59e0b');
+                    addEventLog('✊ Жест: кулак');
+                } else if (detectOpenPalm(hand)) {
+                    lastGestureCheck = now;
+                    speakZen("Открытая ладонь — знак открытости и готовности!", 'heart');
+                    showToast('🖐️ Привет!');
+                    addEventLog('🖐️ Жест: открытая ладонь');
+                }
+            });
+        }
+
+        // ==================== VOICE STATUS REPORT (every 5 min) ====================
+        function voiceStatusReport() {
+            const sessionMins = Math.round((Date.now() - state.sessionStartTime) / 60000);
+            const hours = Math.floor(sessionMins / 60);
+            const mins = sessionMins % 60;
+            const timeStr = hours > 0 ? hours + ' часов ' + mins + ' минут' : mins + ' минут';
+
+            let report = 'Статус-отчёт. Вы работаете ' + timeStr + '. ';
+
+            // Water
+            report += 'Вода: ' + state.waterCount + ' из ' + state.goals.water + ' стаканов. ';
+
+            // Posture
+            const postureEl = document.getElementById('postureScore');
+            if (postureEl && postureEl.textContent !== '--') {
+                const posture = parseInt(postureEl.textContent);
+                if (posture > 80) report += 'Осанка отличная, ' + posture + ' процентов. ';
+                else if (posture > 50) report += 'Осанка средняя, ' + posture + ' процентов. Выпрямитесь. ';
+                else report += 'Внимание! Осанка ' + posture + ' процентов. Сядьте ровно! ';
+            }
+
+            // Activity
+            report += 'Улыбок: ' + state.smileCount + '. ';
+            if (state.stretchCount > 0) report += 'Растяжек: ' + state.stretchCount + '. ';
+            if (state.squatCount > 0) report += 'Приседаний: ' + state.squatCount + '. ';
+            if (state.pomodoroCount > 0) report += 'Помидоров: ' + state.pomodoroCount + '. ';
+
+            // Health
+            report += 'Здоровье: ' + state.healthScore + ' из ста. ';
+
+            // Recommendation
+            if (state.waterCount < Math.ceil(sessionMins / 30)) {
+                report += 'Рекомендация: выпейте стакан воды. ';
+            }
+            if (state.stretchCount === 0 && sessionMins > 30) {
+                report += 'Рекомендация: сделайте растяжку шеи и плеч. ';
+            }
+            if (sessionMins > 50 && sessionMins % 60 < 10) {
+                report += 'Рекомендация: встаньте и пройдитесь одну минуту. ';
+            }
+
+            speakZen(report, 'general', true);
+            addEventLog('📊 Голосовой статус-отчёт');
+        }
+
+        // ==================== VOICE NARRATION FOR MODALS ====================
+        const _originalOpenModal = typeof openModal === 'function' ? openModal : null;
+
+        function openModalWithVoice(modalId) {
+            document.getElementById(modalId)?.classList.add('active');
+
+            // Voice announce modal
+            const modalNames = {
+                breathingModal: 'Открываю дыхательное упражнение. Четыре-четыре-четыре. Вдох, задержка, выдох, задержка — по четыре секунды.',
+                eyeBreakModal: 'Время для отдыха глаз! Посмотрите вдаль на расстояние шести метров в течение двадцати секунд.',
+                settingsModal: 'Открываю настройки. Здесь можно изменить цели, функции и ключ Gemini AI.',
+                statsModal: 'Открываю статистику сессии.',
+                achievementModal: 'Открываю достижения.',
+                diagnosticsModal: 'Открываю диагностику системы.',
+                autoReportAlert: 'Автоматический отчёт сессии.'
+            };
+
+            const announcement = modalNames[modalId];
+            if (announcement) speakZen(announcement, 'general');
+        }
+
+        // Replace openModal globally
+        window.openModal = openModalWithVoice;
+
+        // ==================== UTILITIES ====================
+        function toggleAudio() {
+            state.audioEnabled = !state.audioEnabled;
+            const btn = document.getElementById('toggleAudioBtn');
+            btn.textContent = state.audioEnabled ? '🔊' : '🔇';
+            btn.classList.toggle('active');
+            showToast(state.audioEnabled ? '🔊 Звук включен' : '🔇 Звук отключен');
+            if (state.audioEnabled) {
+                // Resume audio context if suspended
+                if (state.audioContext && state.audioContext.state === 'suspended') {
+                    state.audioContext.resume();
+                }
+                speakZen("Голосовой ассистент активирован! Я буду комментировать всё, что вижу, и мотивировать вас. Поехали!", 'general', true);
+            }
+        }
+
+        function toggleVRMode() {
+            state.vrMode = !state.vrMode;
+            const vrOverlay = document.getElementById('vrOverlay');
+            const vrVideo = document.getElementById('webcamVideoVR');
+            const mainVideo = document.getElementById('webcamVideo');
+
+            if (state.vrMode) {
+                vrOverlay.classList.add('active');
+                vrVideo.srcObject = mainVideo.srcObject;
+                showToast('🥽 VR режим активирован');
+            } else {
+                vrOverlay.classList.remove('active');
+                showToast('🥽 VR режим отключен');
+            }
+
+            document.getElementById('vrModeBtn').classList.toggle('active');
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            // Voice narration of every toast
+            const cleanMsg = message.replace(/[\u{1F300}-\u{1FAD6}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}]/gu, '').trim();
+            if (cleanMsg.length > 2) {
+                speakZen(cleanMsg, 'general');
+            }
+
+            setTimeout(() => {
+                toast.classList.add('fadeOut');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function showNotification(title, body) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification(title, {
+                    body: body,
+                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%23667eea"/><text x="50" y="60" font-size="60" text-anchor="middle" fill="white">☮️</text></svg>'
+                });
+            }
+            // Voice narration of system notifications
+            const cleanTitle = title.replace(/[\u{1F300}-\u{1FAD6}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}]/gu, '').trim();
+            const cleanBody = body.replace(/[\u{1F300}-\u{1FAD6}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}]/gu, '').trim();
+            speakZen(cleanTitle + '. ' + cleanBody, 'general', true);
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function closeAllModals() {
+            document.querySelectorAll('.modal').forEach(modal => modal.classList.remove('active'));
+        }
+
+        function saveSettings() {
+            state.goals.water = parseInt(document.getElementById('goalWater').value) || 8;
+            state.goals.smiles = parseInt(document.getElementById('goalSmiles').value) || 10;
+            state.goals.stretches = parseInt(document.getElementById('goalStretches').value) || 5;
+            state.goals.squats = parseInt(document.getElementById('goalSquats').value) || 20;
+            state.goals.focus = parseFloat(document.getElementById('goalFocus').value) || 2;
+
+            state.features.faceLandmark = document.getElementById('featureFaceLandmark').checked;
+            state.features.handLandmark = document.getElementById('featureHandLandmark').checked;
+            state.features.objectDetection = document.getElementById('featureObjectDetection').checked;
+            state.features.posture = document.getElementById('featurePosture').checked;
+            state.features.smileCounter = document.getElementById('featureSmileCounter').checked;
+            state.features.hydration = document.getElementById('featureHydration').checked;
+
+            // Save Gemini API key
+            const geminiKey = document.getElementById('geminiApiKey')?.value || '';
+            if (geminiKey) localStorage.setItem('zenflowGeminiKey', geminiKey);
+
+            showToast('⚙️ Настройки сохранены');
+            saveToLocalStorage();
+            closeModal('settingsModal');
+        }
+
+        function shareReport(platform) {
+            const reportText = `ZenFlow Session Report:
+- Water: ${state.waterCount} glasses
+- Smiles: ${state.smileCount}
+- Stretches: ${state.stretchCount}
+- Squats: ${state.squatCount}
+- Pomodoros: ${state.pomodoroCount}
+
+Join me in ZenFlow for wellness tracking!`;
+
+            if (platform === 'whatsapp') {
+                const whatsappUrl = 'https://wa.me/?text=' + encodeURIComponent(reportText);
+                window.open(whatsappUrl);
+            }
+
+            showToast('📤 Отчет поделен');
+            closeModal('autoReportAlert');
+        }
+
+        function addEventLog(message) {
+            const logDiv = document.getElementById('eventLog');
+            if (logDiv) {
+                const timestamp = new Date().toLocaleTimeString();
+                logDiv.innerHTML = `[${timestamp}] ${message}<br>` + logDiv.innerHTML;
+                if (logDiv.children.length > 50) {
+                    logDiv.removeChild(logDiv.lastChild);
+                }
+            }
+        }
+
+        function clearEventLog() {
+            const logDiv = document.getElementById('eventLog');
+            if (logDiv) logDiv.innerHTML = '';
+            showToast('📋 Логи очищены');
+        }
+
+        function updateModelStatus() {
+            const status = document.getElementById('diagnosticsModels');
+            status.innerHTML = `
+                <div>FaceLandmarker: <span class="badge badge-success">Готов</span></div>
+                <div>HandLandmarker: <span class="badge badge-success">Готов</span></div>
+                <div>ObjectDetector: <span class="badge badge-success">Готов</span></div>
+            `;
+        }
+
+        function applyDarkMode() {
+            if (state.darkMode) {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        }
+
+        function updateUI() {
+            // Update water progress
+            const waterRatio = Math.min(state.waterCount / state.goals.water, 1);
+            const waterOffset = 282.7 * (1 - waterRatio);
+            document.querySelector('#waterProgress').textContent = state.waterCount;
+            document.querySelectorAll('.progress-ring-circle')[0].style.strokeDashoffset = waterOffset;
+
+            // Update smile progress
+            const smileRatio = Math.min(state.smileCount / state.goals.smiles, 1);
+            const smileOffset = 282.7 * (1 - smileRatio);
+            document.querySelector('#smileProgress').textContent = state.smileCount;
+            document.querySelectorAll('.progress-ring-circle')[1].style.strokeDashoffset = smileOffset;
+
+            // Update stretch progress
+            const stretchRatio = Math.min(state.stretchCount / state.goals.stretches, 1);
+            const stretchOffset = 282.7 * (1 - stretchRatio);
+            document.querySelector('#stretchProgress').textContent = state.stretchCount;
+            document.querySelectorAll('.progress-ring-circle')[2].style.strokeDashoffset = stretchOffset;
+
+            // Update squat progress
+            const squatRatio = Math.min(state.squatCount / state.goals.squats, 1);
+            const squatOffset = 282.7 * (1 - squatRatio);
+            document.querySelector('#sqatProgress').textContent = state.squatCount;
+            document.querySelectorAll('.progress-ring-circle')[3].style.strokeDashoffset = squatOffset;
+
+            // Update stats
+            document.getElementById('statsWater').textContent = state.waterCount;
+            document.getElementById('statsSmiles').textContent = state.smileCount;
+            document.getElementById('statsStretches').textContent = state.stretchCount;
+            document.getElementById('statsSquats').textContent = state.squatCount;
+            document.getElementById('statsYawns').textContent = state.yawnCount;
+            document.getElementById('statsPomodoros').textContent = state.pomodoroCount;
+
+            // Update session time
+            const sessionTime = Math.floor((Date.now() - state.sessionStartTime) / 1000);
+            const hours = Math.floor(sessionTime / 3600);
+            const minutes = Math.floor((sessionTime % 3600) / 60);
+            const seconds = sessionTime % 60;
+            document.getElementById('statsSessionTime').textContent =
+                String(hours).padStart(2, '0') + ':' +
+                String(minutes).padStart(2, '0') + ':' +
+                String(seconds).padStart(2, '0');
+
+            // Update FPS
+            document.getElementById('diagnosticsFPS').textContent = state.fps;
+
+            // Update caffeine
+            document.getElementById('caffeineMg').textContent = state.caffeineMg;
+
+            // Update garden
+            const totalActions = state.waterCount + state.smileCount + state.stretchCount + state.squatCount;
+            if (totalActions === 0) {
+                document.getElementById('gardenEmoji').textContent = '🌱';
+            } else if (totalActions < 10) {
+                document.getElementById('gardenEmoji').textContent = '🌿';
+            } else if (totalActions < 30) {
+                document.getElementById('gardenEmoji').textContent = '🌳';
+            } else {
+                document.getElementById('gardenEmoji').textContent = '🌲';
+            }
+
+            // Check achievements
+            checkAchievements();
+        }
+
+        function updateWeekChart() {
+            const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+            const chartDiv = document.getElementById('weekChart');
+
+            if (!chartDiv) return;
+
+            chartDiv.innerHTML = '';
+
+            for (let i = 0; i < 7; i++) {
+                const value = Math.round(Math.random() * 100);
+                const height = (value / 100) * 180;
+
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.innerHTML = `
+                    <div class="chart-bar-fill" style="height: ${height}px;">
+                        <div class="chart-bar-value">${value}</div>
+                    </div>
+                    <div class="chart-bar-label">${days[i]}</div>
+                `;
+                chartDiv.appendChild(bar);
+            }
+        }
+
+        function saveToLocalStorage() {
+            const data = {
+                waterCount: state.waterCount,
+                smileCount: state.smileCount,
+                stretchCount: state.stretchCount,
+                squatCount: state.squatCount,
+                yawnCount: state.yawnCount,
+                pomodoroCount: state.pomodoroCount,
+                caffeineMg: state.caffeineMg,
+                streak: state.streak,
+                lastActiveDate: state.lastActiveDate,
+                achievements: state.achievements,
+                moodLog: state.moodLog,
+                goals: state.goals,
+                darkMode: state.darkMode,
+                features: state.features
+            };
+            localStorage.setItem('zenflowData', JSON.stringify(data));
+        }
+
+        function loadFromLocalStorage() {
+            const data = localStorage.getItem('zenflowData');
+            if (data) {
+                const parsed = JSON.parse(data);
+                Object.assign(state, parsed);
+            }
+
+            // Update dark mode setting
+            const darkModeCheckbox = document.getElementById('darkModeToggle');
+            if (darkModeCheckbox) {
+                darkModeCheckbox.checked = state.darkMode;
+            }
+            applyDarkMode();
+
+            // Load Gemini API key
+            const savedKey = localStorage.getItem('zenflowGeminiKey');
+            if (savedKey) {
+                const keyInput = document.getElementById('geminiApiKey');
+                if (keyInput) keyInput.value = savedKey;
+            }
+
+            // Update settings inputs
+            document.getElementById('goalWater').value = state.goals.water;
+            document.getElementById('goalSmiles').value = state.goals.smiles;
+            document.getElementById('goalStretches').value = state.goals.stretches;
+            document.getElementById('goalSquats').value = state.goals.squats;
+            document.getElementById('goalFocus').value = state.goals.focus;
+
+            document.getElementById('featureFaceLandmark').checked = state.features.faceLandmark;
+            document.getElementById('featureHandLandmark').checked = state.features.handLandmark;
+            document.getElementById('featureObjectDetection').checked = state.features.objectDetection;
+            document.getElementById('featurePosture').checked = state.features.posture;
+            document.getElementById('featureSmileCounter').checked = state.features.smileCounter;
+            document.getElementById('featureHydration').checked = state.features.hydration;
+        }
+
+        function initializeShortcuts() {
+            const shortcuts = [
+                { key: 'V', desc: 'VR Режим' },
+                { key: 'M', desc: 'Вкл/Выкл Звук' },
+                { key: 'B', desc: 'Дыхательное Упражнение' },
+                { key: 'P', desc: 'Помидор (Пауза/Начало)' },
+                { key: 'S', desc: 'Снимок' },
+                { key: 'G', desc: 'Голосовые Команды' },
+                { key: 'R', desc: 'AI Отчёт' },
+                { key: 'I', desc: 'AI Инсайты' },
+                { key: 'Пробел', desc: 'Логировать Воду' },
+                { key: '?', desc: 'Быстрые Клавиши' },
+                { key: 'Esc', desc: 'Закрыть Модали' }
+            ];
+
+            const list = document.getElementById('shortcutsList');
+            list.innerHTML = '';
+
+            shortcuts.forEach(s => {
+                const item = document.createElement('div');
+                item.className = 'shortcut-item';
+                item.innerHTML = `
+                    <div class="shortcut-desc">${s.desc}</div>
+                    <div class="shortcut-key">${s.key}</div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        // Event listener for VR exit button
+        document.getElementById('vrExitBtn').addEventListener('click', toggleVRMode);
+
+        // Initialize on load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
+
+        // Initialize shortcuts
+        initializeShortcuts();
+
+        // Update week chart on stats modal open
+        const statsModal = document.getElementById('statsModal');
+        if (statsModal) {
+            statsModal.addEventListener('click', updateWeekChart);
+        }
+
+        // Session summary on exit
+        window.addEventListener('beforeunload', (e) => {
+            const sessionTime = (Date.now() - state.sessionStartTime) / 1000 / 60;
+            if (sessionTime > 5) {
+                console.log(`ZenFlow Session Summary:
+- Duration: ${Math.round(sessionTime)} minutes
+- Water: ${state.waterCount} glasses
+- Smiles: ${state.smileCount}
+- Stretches: ${state.stretchCount}
+- Squats: ${state.squatCount}
+- Pomodoros: ${state.pomodoroCount}
+- Mood entries: ${state.moodLog.length}`);
+            }
+        });
+
+        // Expose functions to global scope for HTML onclick handlers
+        window.logWater = logWater;
+        window.addCaffeine = addCaffeine;
+        window.playAmbientSound = playAmbientSound;
+        window.logMood = logMood;
+        window.toggleAudio = toggleAudio;
+        window.toggleVRMode = toggleVRMode;
+        window.takeSnapshot = takeSnapshot;
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+        window.closeAllModals = closeAllModals;
+        window.startPomodoro = startPomodoro;
+        window.stopPomodoro = stopPomodoro;
+        window.resetPomodoro = resetPomodoro;
+        window.resetBreathing = resetBreathing;
+        window.eyeBreakComplete = eyeBreakComplete;
+        window.shareReport = shareReport;
+        window.saveSettings = saveSettings;
+        window.clearEventLog = clearEventLog;
+        window.sendChatMessage = sendChatMessage;
+        window.toggleVoiceCommands = toggleVoiceCommands;
+        window.generateAIReport = generateAIReport;
+        window.requestAIInsight = requestAIInsight;
+        window.generateDailyChallenges = generateDailyChallenges;
+        window.checkAdvancedGestures = checkAdvancedGestures;
+        window.stopAmbientSounds = stopAmbientSounds;
+        window.voiceStatusReport = voiceStatusReport;
+        window.openModalWithVoice = openModalWithVoice;
+
+    </script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js', { scope: './' })
+                    .then(reg => {
+                        console.log('[ZenFlow] SW registered', reg.scope);
+                        setInterval(() => reg.update(), 3600000);
+                    })
+                    .catch(err => console.warn('[ZenFlow] SW failed:', err));
+            });
+        }
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.createElement('button');
+            installBtn.className = 'fixed bottom-4 right-4 z-50 px-4 py-3 bg-emerald-500 text-white rounded-2xl font-bold shadow-lg hover:bg-emerald-400 transition animate-bounce';
+            installBtn.innerHTML = '📲 Установить ZenFlow';
+            installBtn.onclick = async () => {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') installBtn.remove();
+                deferredPrompt = null;
+            };
+            document.body.appendChild(installBtn);
+        });
+    </script>
+</body>
+</html>

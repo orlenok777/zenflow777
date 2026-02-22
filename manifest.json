@@ -1,0 +1,74 @@
+{
+  "name": "ZenFlow Ultimate",
+  "short_name": "ZenFlow",
+  "description": "AI-помощник для здоровья, осанки и фокуса",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#064e3b",
+  "theme_color": "#34d399",
+  "categories": ["health", "lifestyle"],
+  "screenshots": [
+    {
+      "src": "./icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "./icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    }
+  ],
+  "icons": [
+    {
+      "src": "./icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Posture Check",
+      "short_name": "Posture",
+      "description": "Check your posture with AI",
+      "url": "./index.html?mode=posture",
+      "icons": [
+        {
+          "src": "./icons/icon-192.svg",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Focus Session",
+      "short_name": "Focus",
+      "description": "Start a focused work session",
+      "url": "./index.html?mode=focus",
+      "icons": [
+        {
+          "src": "./icons/icon-192.svg",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
+}
