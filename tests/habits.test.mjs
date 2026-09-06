@@ -1,4 +1,4 @@
-import test from 'node:test';import assert from 'node:assert/strict';import {HABIT_DEFAULTS as S,habitSettings,drinkAtMouth,DrinkTracker,postureDelta,pitchProxy,cleanDrinkLog} from '../releases/8.1.0/habits.mjs';import {boot} from './harness.mjs';
+import test from 'node:test';import assert from 'node:assert/strict';import {HABIT_DEFAULTS as S,habitSettings,drinkAtMouth,DrinkTracker,postureDelta,pitchProxy,cleanDrinkLog} from '../releases/8.1.1/habits.mjs';import {boot} from './harness.mjs';
 const det=(type='cup',score=.9)=>({categories:[{categoryName:type,score}],boundingBox:{originX:290,originY:250,width:60,height:100}});
 function camera(a){a.state.cameraActive=true;const lm=Array.from({length:478},()=>({x:.5,y:.5,z:0}));for(const [i,x,y]of [[234,.25,.5],[454,.75,.5],[10,.5,.2],[152,.5,.8],[33,.35,.4],[263,.65,.4],[133,.43,.4],[362,.57,.4],[159,.39,.39],[145,.39,.41],[386,.61,.39],[374,.61,.41],[61,.39,.6],[291,.61,.6],[13,.5,.58],[14,.5,.6]])lm[i]={x,y,z:0};a.vision.faceResult={faceLandmarks:[lm],faceBlendshapes:[]};a.processFace();a.vision.objects=[det()];return lm;}
 function tick(a,ms){a.advance(ms);a.processFace();a.detectDrink();}
