@@ -1,1 +1,1 @@
-{"name":"zenflow-vision","version":"8.0.0","private":true,"type":"module","scripts":{"test":"node --test tests/*.test.mjs","check":"node --check releases/8.0.0/app.mjs && node --check releases/8.0.0/analytics.mjs"},"engines":{"node":">=22"}}
+{"name":"zenflow-vision","version":"8.1.0","private":true,"type":"module","scripts":{"test":"node --test tests/*.test.mjs","check":"node --check releases/8.1.0/app.mjs && node --check releases/8.1.0/analytics.mjs"},"engines":{"node":">=22"}}
