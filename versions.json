@@ -1,0 +1,8 @@
+{
+  "name": "ZenFlow Vision",
+  "latest": "8.0.0",
+  "releases": [
+    {"version":"8.0.0","date":"2026-09-06","entry":"ZenFlow-8.0.0.html","assets":"releases/8.0.0/","dataSchema":7},
+    {"version":"7.0","date":"2026-09-06","entry":"ZenFlow-7.0.html","dataSchema":7}
+  ]
+}
