@@ -1,0 +1,62 @@
+{
+  "test": {
+    "text": "Проверка звука. Если вы слышите эту фразу, аудиоплеер работает.",
+    "duration": 4.75,
+    "bytes": 57723,
+    "sha256": "4f5be8f7ed8f0ba7116db585b17cf6e79e6b660c01d26d0800ea4bdfdd3c4960"
+  },
+  "cup": {
+    "text": "Стакан или кружка у рта. Поднесение записано.",
+    "duration": 3.31,
+    "bytes": 40482,
+    "sha256": "f7922264d4b651785fda306a2864c2afdabcc3e2b9c35d289ad02dff0e791f1f"
+  },
+  "bottle": {
+    "text": "Бутылка у рта. Поднесение записано.",
+    "duration": 2.73,
+    "bytes": 33586,
+    "sha256": "e9cfb8987723ade9b2d0c5d2261d707922f76ba887b3c51f597b8045846ac4ac"
+  },
+  "posture": {
+    "text": "Положение головы изменилось. Проверьте, удобно ли вы сидите.",
+    "duration": 3.99,
+    "bytes": 48632,
+    "sha256": "ff932d8d67fca96859243aeb03c92e917aa64b124a4361fdc855fc0baf4ae673"
+  },
+  "inhale": {
+    "text": "Вдох.",
+    "duration": 0.77,
+    "bytes": 10076,
+    "sha256": "00251046b3435c7106e4430fd884bdd79cffb8ff4c2344d4fb915fa2256cd3ac"
+  },
+  "exhale": {
+    "text": "Выдох.",
+    "duration": 0.8,
+    "bytes": 10389,
+    "sha256": "729ee7dff2f64845641bea7d7ed024293e1b07d3c84f590e862ffa55c1cdf5fe"
+  },
+  "hold": {
+    "text": "Задержка.",
+    "duration": 1.01,
+    "bytes": 12897,
+    "sha256": "cd5b0a719920c1c89513fe77ea3825e6e37c46ef43b9f01c43063b318448220c"
+  },
+  "water": {
+    "text": "Перерыв. Проверьте, хочется ли вам пить.",
+    "duration": 3.37,
+    "bytes": 41423,
+    "sha256": "3700ba1600fff1d1d0782ba2ff50f39d32cac15335e7fbdb10ea4e7af8873a2a"
+  },
+  "break": {
+    "text": "Пора сделать короткий перерыв.",
+    "duration": 2.18,
+    "bytes": 27003,
+    "sha256": "3e4d1e3e3a196e6bcc8cdd3c2e7de0942477819192f3796a04e6f47cfe7e12ac"
+  },
+  "phone": {
+    "text": "Телефон остаётся в кадре.",
+    "duration": 1.72,
+    "bytes": 21360,
+    "sha256": "abd46802df44c187b8f9dec4129431e7aaf637aa88b4e2fca87a375f013178d1"
+  }
+}

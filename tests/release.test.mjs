@@ -1,4 +1,4 @@
-import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {VERSION} from '../releases/8.1.2/analytics.mjs';
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {VERSION} from '../releases/8.1.3/analytics.mjs';
 const root=new URL('../',import.meta.url);const read=p=>fs.readFileSync(new URL(p,root),'utf8');
 test('Версия едина в манифесте, HTML, модулях и latest',()=>{const m=JSON.parse(read('versions.json'));assert.equal(m.latest,VERSION);assert.equal(JSON.parse(read('package.json')).version,VERSION);assert.ok(read(m.releases[0].entry).includes(`<title>ZenFlow Vision ${VERSION}`));assert.ok(read('ZenFlow-latest.html').includes(m.releases[0].entry));assert.ok(fs.existsSync(new URL(m.releases[0].assets+'app.mjs',root)));});
 test('HTML: идентификаторы уникальны и локальные модули существуют',()=>{const html=read(`ZenFlow-${VERSION}.html`),ids=[...html.matchAll(/id="([^"]+)"/g)].map(x=>x[1]);assert.equal(ids.length,new Set(ids).size);for(const m of html.matchAll(/(?:src|href)="(\.\/releases\/[^"]+)"/g))assert.ok(fs.existsSync(new URL(m[1],root)),m[1]);});
